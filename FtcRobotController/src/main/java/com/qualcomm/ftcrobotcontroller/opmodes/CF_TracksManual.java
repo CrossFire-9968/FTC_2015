@@ -44,7 +44,8 @@ public class CF_TracksManual extends CF_Hardware
       float Gp1_RightStickY = gamepad1.right_stick_y;
       boolean Gp1_DPadUp = gamepad1.dpad_up;
       boolean Gp1_DPadDown = gamepad1.dpad_down;
-
+      boolean Gp1_DPadRight = gamepad1.dpad_right;
+      boolean Gp1_DPadLeft = gamepad1.dpad_left;
       // Change power multiplier based on trigger pressed
       if (Gp1_DPadUp == true)
       {
@@ -52,7 +53,15 @@ public class CF_TracksManual extends CF_Hardware
       }
       else if (Gp1_DPadDown == true)
       {
-         PowerGain = 0.18f;
+         PowerGain = 0.50f;
+      }
+      else if (Gp1_DPadRight == true)
+      {
+         PowerGain = 0.60f;
+      }
+      else if (Gp1_DPadLeft == true)
+      {
+         PowerGain = 0.40f;
       }
 
 

@@ -120,7 +120,7 @@ public class PushBotAuto extends PushBotTelemetry
             // If they haven't, then the op-mode remains in this state (i.e this
             // block will be executed the next time this method is called).
             //
-            if (have_drive_encoders_reached (2880, 2880))
+            if (have_drive_encoders_reached (1000, 1000))
             {
                 //
                 // Reset the encoders to ensure they are at a known good value.

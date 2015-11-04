@@ -22,7 +22,7 @@ public class CF_Auto_Test extends PushBotTelemetry
     /**
      * Construct the class.
      *
-     * The system calls this member when the class is instantiated.
+     * The system calls this member when the class is instatiated.
      */
     public CF_Auto_Test()
 
@@ -114,7 +114,6 @@ public class CF_Auto_Test extends PushBotTelemetry
             //
             set_drive_power (1.0f, 1.0f);
 
-            //
             // Have the motor shafts turned the required amount?
             //
             // If they haven't, then the op-mode remains in this state (i.e this

@@ -12,7 +12,7 @@ package com.qualcomm.ftcrobotcontroller.opmodes;
  * @author SSI Robotics
  * @version 2015-08-01-06-01
  */
-public class CF_Auto_Test extends PushBotTelemetry
+public class CF_Auto_Test extends CF_Hardware
 
 {
     //--------------------------------------------------------------------------

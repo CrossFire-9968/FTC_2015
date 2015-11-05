@@ -1,7 +1,9 @@
 package com.qualcomm.ftcrobotcontroller.opmodes;
 
+import com.qualcomm.ftccommon.DbgLog;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.Range;
 
 
@@ -12,6 +14,9 @@ public class CF_Hardware extends OpMode
 {
    private DcMotor LeftTrackMotor;
    private DcMotor RightTrackMotor;
+   private Servo ZipLineServo;
+   private String WarningMessageString;
+   private boolean WarningGenerated = false;
 
    //--------------------------------------------------------------------------
    // NAME: CF_Hardware
@@ -37,13 +42,32 @@ public class CF_Hardware extends OpMode
       // the FTC Robot Controller (Settings-->Configure Robot).
       LeftTrackMotor = hardwareMap.dcMotor.get("LeftTrackMotor");
       RightTrackMotor = hardwareMap.dcMotor.get("RightTrackMotor");
+      ZipLineServo =  hardwareMap.servo.get("ZipLineServo");
 
       // Reverse right side motors so left and right motors spin same direction on robot
      RightTrackMotor.setDirection(DcMotor.Direction.REVERSE);
 
    }
 
+   //--------------------------------------------------------------------------
+   // NAME: DriveReverse
+   // DESC: Changes drive motor direction
+   //--------------------------------------------------------------------------
+   public void DriveReverse()
+   {
+      LeftTrackMotor.setDirection(DcMotor.Direction.REVERSE);
+      RightTrackMotor.setDirection(DcMotor.Direction.FORWARD);
+   }
 
+   //--------------------------------------------------------------------------
+   // NAME: DriveForward
+   // DESC: Changes drive motor direction
+   //--------------------------------------------------------------------------
+   public void DriveForward()
+   {
+      RightTrackMotor.setDirection(DcMotor.Direction.REVERSE);
+      LeftTrackMotor.setDirection(DcMotor.Direction.FORWARD);
+   }
 
    //--------------------------------------------------------------------------
    // NAME: start
@@ -160,7 +184,75 @@ public class CF_Hardware extends OpMode
    void SetMotorPower(double leftMotorPower, double rightMotorPower)
    {
       // Set motor power levels
-     LeftTrackMotor.setPower(leftMotorPower);
-     RightTrackMotor.setPower(rightMotorPower);
+      if (LeftTrackMotor != null)
+      {
+         LeftTrackMotor.setPower(leftMotorPower);
+      }
+
+      if (RightTrackMotor != null)
+      {
+         RightTrackMotor.setPower(rightMotorPower);
+      }
    }
+
+
+   //--------------------------------------------------------------------------
+   // NAME: SetZipLineServoPosition
+   // DESC: Scale the joystick input using a nonlinear algorithm.
+   //--------------------------------------------------------------------------
+   void SetZipLineServoPosition(double servoPositionDesired)
+   {
+      // Ensure the specific value is legal.
+      double servoPositionActual = Range.clip(servoPositionDesired, Servo.MIN_POSITION, Servo.MAX_POSITION);
+
+      // Set servo power levels
+      if (ZipLineServo != null)
+      {
+         try
+         {
+            ZipLineServo.setPosition(servoPositionActual);
+         }
+
+         catch (Exception p_exeception)
+         {
+            WarningMessage("ZipLineServo");
+            DbgLog.msg(p_exeception.getLocalizedMessage());
+            ZipLineServo = null;
+         }
+      }
+   }
+
+
+   //--------------------------------------------------------------------------
+   // NAME: GetZipLineServoPosition
+   // DESC:
+   //--------------------------------------------------------------------------
+   double GetZipLineServoPosition()
+   {
+      double position = 0.0;
+
+      if (ZipLineServo != null)
+      {
+         position = ZipLineServo.getPosition();
+      }
+
+      return position;
+   }
+
+   //--------------------------------------------------------------------------
+   // NAME: WarningMessage
+   // DESC:
+   //--------------------------------------------------------------------------
+   void WarningMessage (String exceptionMessage)
+   {
+      if (WarningGenerated)
+      {
+         WarningMessageString += ", ";
+      }
+      WarningGenerated = true;
+      WarningMessageString += exceptionMessage;
+
+   } // m_warning_message
+
 }
+

@@ -2,6 +2,8 @@ package com.qualcomm.ftcrobotcontroller.opmodes;
 
 import android.location.GpsSatellite;
 
+import com.qualcomm.robotcore.hardware.DcMotor;
+
 /**
  * Created by Lauren_FTC on 10/18/2015.
  */
@@ -29,7 +31,10 @@ public class CF_TracksManual extends CF_Hardware
    {
       // DC Motors obtain the current values of the joystick controllers.
       this.motorControl();
-}
+
+      // Method for operating ZipLineServo
+      this.ZipLineServo();
+   }
 
    //--------------------------------------------------------------------------
    // NAME: motorControl
@@ -50,20 +55,32 @@ public class CF_TracksManual extends CF_Hardware
       // Change power multiplier based on trigger pressed
       if (Gp1_DPadUp == true)
       {
-         PowerGain = 0.40f;
-      }
-      else if (Gp1_DPadDown == true)
-      {
-         PowerGain = 0.50f;
-      }
-      else if (Gp1_DPadLeft == true)
-      {
-         PowerGain = 1.00f;
+         PowerGain = 0.10f;
       }
       else if (Gp1_DPadRight == true)
       {
-         PowerGain = 0.60f;
+         PowerGain = 0.20f;
       }
+      else if (Gp1_DPadDown == true)
+      {
+         PowerGain = 0.30f;
+      }
+      else if (Gp1_DPadLeft == true)
+      {
+         PowerGain = 0.40f;
+      }
+
+      // Used to change driving direction
+      if (gamepad1.a)
+      {
+         DriveReverse();
+      }
+
+      if (gamepad1.y)
+      {
+         DriveForward();
+      }
+
       // Convert game pad values to meaningful motor power values.  X and Y
       // are range limited to +/-1.  Negative values are when joystick pushed
       // forward. DC motors are scaled to make it easier to control at slower speeds
@@ -79,9 +96,35 @@ public class CF_TracksManual extends CF_Hardware
       telemetry.addData("10", "GP1 Left: " + Gp1_LeftStickY);
       telemetry.addData("11", "GP1 Right: " + Gp1_RightStickY);
       telemetry.addData("03", "PowerGain: " + PowerGain);
+
    }
 
+
+   //--------------------------------------------------------------------------
+   // NAME: ZipLineServo
+   // DESC: Method for operating servo to hit zip line triggers
+   //--------------------------------------------------------------------------
+   private void ZipLineServo()
+   {
+      // Servo Motors Obtain the current values of the gamepad 'RightBumper' and 'LeftBumper' buttons.
+      // The clip method guarantees the value never exceeds the allowable
+      // range.
+      if (gamepad1.right_bumper)
+      {
+         SetZipLineServoPosition(GetZipLineServoPosition() - 0.05);
+      }
+      else if (gamepad1.left_bumper)
+      {
+         SetZipLineServoPosition(GetZipLineServoPosition() + 0.05);
+      }
+
+      // Send telemetry data to the driver station.
+      telemetry.addData("04", "Zip Line Servo: " + GetZipLineServoPosition());
+   }
 }
+
+
+
 
 
 

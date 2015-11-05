@@ -156,6 +156,9 @@ public class CF_Auto_Test extends CF_Hardware
             //
             break;
         }
+        // Realign the motors
+        // I'm not quite sure where to put this method, but I'll figure it out.
+        //cf_realign_encoders();
 
         //
         // Send telemetry data to the driver station.

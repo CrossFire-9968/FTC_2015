@@ -174,6 +174,31 @@ public class CF_Hardware extends OpMode
    // Added: 4/11/2015 by Ryley Hindman(jumbojet0105)
    //------------------------------------------------------------
    //------------------------------------------------------------
+   
+   // So basically, this method brings the motor encoders back
+   //into sync with each other, thus helping ensure that the
+   //tracks end up at the same spot at the same time.
+   // Feel free to play with the power settings, because these
+   //are just arbitrary settings I chose.
+   // Also, I'm not sure if a_..._encoder_count(); is the right
+   //method to use, but I guess we'll find out...
+   public void cf_realign_encoders() {
+   	int cfLeft = a_left_encoder_count();
+   	int cfRight = a_right_encoder_count();
+
+   	if (cfLeft > cfRight) {
+   		set_drive_power(0.95f, 1.0f);
+   	}
+   	else if (cfRight > cfLeft) {
+   		set_drive_power(1.0f, 0.95f);
+   	}
+   	else if (cfRight = cfLeft) {
+   		break;   		
+   	}
+   }
+   // cf_relalign_encoders
+
+
     void set_drive_power (double p_left_power, double p_right_power)
 
     {

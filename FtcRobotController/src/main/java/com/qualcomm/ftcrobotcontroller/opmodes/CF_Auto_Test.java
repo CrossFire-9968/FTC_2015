@@ -9,7 +9,7 @@ package com.qualcomm.ftcrobotcontroller.opmodes;
  * drive motors and associated encoders implemented using a state machine for
  * the Push Bot.
  *
- * @author SSI Robotics
+ * @author Ryley Hindman
  * @version 2015-08-01-06-01
  */
 public class CF_Auto_Test extends CF_Hardware
@@ -147,14 +147,8 @@ public class CF_Auto_Test extends CF_Hardware
                 v_state++;
             }
             break;
-        //
-        // Turn left until the encoders exceed the specified values.
-        //
 
-        //
-        // Perform no action - stay in this case until the OpMode is stopped.
-        // This method will still be called regardless of the state machine.
-        //
+
         default:
             //
             // The autonomous actions have been accomplished (i.e. the state has
@@ -166,9 +160,17 @@ public class CF_Auto_Test extends CF_Hardware
         //
         // Send telemetry data to the driver station.
         //
+
+        // Get the encoder count for both the left and right encoders
+        int cfLeftCount = a_left_encoder_count();
+        int cfRightCount = a_right_encoder_count();
+
         update_telemetry (); // Update common telemetry
         telemetry.addData ("18", "State: " + v_state);
-
+        //This updates the encoder state for the left encoder
+        telemetry.addData("19", "Left Count: " + cfLeftCount);
+        //This updates the encoder state for the right encoder
+        telemetry.addData("20", "Right Count: " + cfRightCount);
     } // loop
 
     //--------------------------------------------------------------------------

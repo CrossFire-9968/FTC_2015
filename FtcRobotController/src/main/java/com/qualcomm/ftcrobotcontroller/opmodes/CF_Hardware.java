@@ -181,9 +181,9 @@ public class CF_Hardware extends OpMode
         {
             LeftTrackMotor.setPower (p_left_power);
         }
-        if (Right_Track_Motor != null)
+        if (RightTrackMotor != null)
         {
-            Right_Track_Motor.setPower (p_right_power);
+            RightTrackMotor.setPower (p_right_power);
         }
 
     } // set_drive_power
@@ -217,9 +217,9 @@ public class CF_Hardware extends OpMode
     public void run_using_right_drive_encoder ()
 
     {
-        if (Right_Track_Motor != null)
+        if (RightTrackMotor != null)
         {
-            Right_Track_Motor.setChannelMode
+            RightTrackMotor.setChannelMode
                 ( DcMotorController.RunMode.RUN_USING_ENCODERS
                 );
         }
@@ -277,12 +277,12 @@ public class CF_Hardware extends OpMode
     public void run_without_right_drive_encoder ()
 
     {
-        if (Right_Track_Motor != null)
+        if (RightTrackMotor != null)
         {
-            if (Right_Track_Motor.getChannelMode () ==
+            if (RightTrackMotor.getChannelMode () ==
                 DcMotorController.RunMode.RESET_ENCODERS)
             {
-                Right_Track_Motor.setChannelMode
+                RightTrackMotor.setChannelMode
                     ( DcMotorController.RunMode.RUN_WITHOUT_ENCODERS
                     );
             }
@@ -337,9 +337,9 @@ public class CF_Hardware extends OpMode
     public void reset_right_drive_encoder ()
 
     {
-        if (Right_Track_Motor != null)
+        if (RightTrackMotor != null)
         {
-            Right_Track_Motor.setChannelMode
+            RightTrackMotor.setChannelMode
                 ( DcMotorController.RunMode.RESET_ENCODERS
                 );
         }
@@ -396,9 +396,9 @@ public class CF_Hardware extends OpMode
     {
         int l_return = 0;
 
-        if (Right_Track_Motor != null)
+        if (RightTrackMotor != null)
         {
-            l_return = Right_Track_Motor.getCurrentPosition ();
+            l_return = RightTrackMotor.getCurrentPosition ();
         }
 
         return l_return;
@@ -458,14 +458,14 @@ public class CF_Hardware extends OpMode
         //
         boolean l_return = false;
 
-        if (Right_Track_Motor != null)
+        if (RightTrackMotor != null)
         {
             //
             // Have the encoders reached the specified values?
             //
             // TODO Implement stall code using these variables.
             //
-            if (Math.abs (Right_Track_Motor.getCurrentPosition ()) > p_count)
+            if (Math.abs (RightTrackMotor.getCurrentPosition ()) > p_count)
             {
                 //
                 // Set the status to a positive indication.

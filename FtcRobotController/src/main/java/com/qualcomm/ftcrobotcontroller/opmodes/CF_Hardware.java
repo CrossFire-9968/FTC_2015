@@ -192,8 +192,7 @@ public class CF_Hardware extends OpMode
    	else if (cfRight > cfLeft) {
    		set_drive_power(1.0f, 0.95f);
    	}
-   	else if (cfRight = cfLeft) {
-   		break;   		
+   	else if (cfRight == cfLeft) {
    	}
    }
    // cf_relalign_encoders
@@ -703,7 +702,7 @@ public class CF_Hardware extends OpMode
     //--------------------------------------------------------
     // Encoder telemetry
     //--------------------------------------------------------
-    public void update_telemetry ()
+    /* public void update_telemetry ()
 
     {
         if (a_warning_generated ())
@@ -736,5 +735,5 @@ public class CF_Hardware extends OpMode
             , "Hand Position: " + a_hand_position ()
             );
 
-    } // update_telemetry
+    } // update_telemetry*/
 }

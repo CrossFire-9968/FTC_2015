@@ -118,8 +118,9 @@ public class CF_Auto_Test extends CF_Hardware
             //
             // If they haven't, then the op-mode remains in this state (i.e this
             // block will be executed the next time this method is called).
-            //
-            if (have_drive_encoders_reached (1000, 1000))
+            //5000 revs = 31 in
+
+            if (have_drive_encoders_reached (5000, 5000))
             {
                 //
                 // Reset the encoders to ensure they are at a known good value.
@@ -168,12 +169,16 @@ public class CF_Auto_Test extends CF_Hardware
         int cfLeftCount = a_left_encoder_count();
         int cfRightCount = a_right_encoder_count();
 
-        update_telemetry (); // Update common telemetry
+        //update_telemetry (); // Update common telemetry
         telemetry.addData ("18", "State: " + v_state);
         //This updates the encoder state for the left encoder
         telemetry.addData("19", "Left Count: " + cfLeftCount);
         //This updates the encoder state for the right encoder
         telemetry.addData("20", "Right Count: " + cfRightCount);
+
+        telemetry.addData("21", "Left Drive Power: " + GetLeftTrackMotorPower());
+
+        telemetry.addData("22", "Right Drive Power: " + GetRightTrackMotorPower());
     } // loop
 
     //--------------------------------------------------------------------------

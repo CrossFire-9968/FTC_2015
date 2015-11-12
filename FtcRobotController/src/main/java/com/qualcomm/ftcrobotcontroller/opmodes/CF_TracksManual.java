@@ -1,9 +1,5 @@
 package com.qualcomm.ftcrobotcontroller.opmodes;
 
-import android.location.GpsSatellite;
-
-import com.qualcomm.robotcore.hardware.DcMotor;
-
 /**
  * Created by Lauren_FTC on 10/18/2015.
  */
@@ -99,6 +95,11 @@ public class CF_TracksManual extends CF_Hardware
 
    }
 
+   private void bucketMotorControl()
+   {
+      float Gp1_LeftStickY = gamepad1.left_stick_y;
+      float Gp1_RightStickX = gamepad1.right_stick_x;
+   }
 
    //--------------------------------------------------------------------------
    // NAME: ZipLineServo
@@ -111,11 +112,11 @@ public class CF_TracksManual extends CF_Hardware
       // range.
       if (gamepad1.right_bumper)
       {
-         SetZipLineServoPosition(GetZipLineServoPosition() - 0.05);
+         SetZipLineServoPosition(GetZipLineServoPosition() + 0.05);
       }
       else if (gamepad1.left_bumper)
       {
-         SetZipLineServoPosition(GetZipLineServoPosition() + 0.05);
+         SetZipLineServoPosition(GetZipLineServoPosition() - 0.05);
       }
 
       // Send telemetry data to the driver station.

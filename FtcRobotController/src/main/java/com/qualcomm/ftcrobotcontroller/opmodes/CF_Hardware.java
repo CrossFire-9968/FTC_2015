@@ -17,6 +17,8 @@ public class CF_Hardware extends OpMode
    private Servo ZipLineServo;
    private String WarningMessageString;
    private boolean WarningGenerated = false;
+   private DcMotor VerticalBucketMotor;
+   private DcMotor HorizontalBucketMotor;
 
    //--------------------------------------------------------------------------
    // NAME: CF_Hardware
@@ -43,6 +45,8 @@ public class CF_Hardware extends OpMode
       LeftTrackMotor = hardwareMap.dcMotor.get("LeftTrackMotor");
       RightTrackMotor = hardwareMap.dcMotor.get("RightTrackMotor");
       ZipLineServo =  hardwareMap.servo.get("ZipLineServo");
+      HorizontalBucketMotor = hardwareMap.dcMotor.get("HorizontalBucketMotor");
+      VerticalBucketMotor = hardwareMap.dcMotor.get("VerticalBucketMotor");
 
       // Reverse right side motors so left and right motors spin same direction on robot
      RightTrackMotor.setDirection(DcMotor.Direction.REVERSE);
@@ -176,6 +180,24 @@ public class CF_Hardware extends OpMode
        return RightTrackMotor.getPower();
    }
 
+
+   //--------------------------------------------------------------------------
+   // NAME: GetHorizontalBucketMotorPower
+   // DESC: Access the horizontal bucket motor's power level.
+   //--------------------------------------------------------------------------
+   double GetHorizontalBucketMotorPower()
+   {
+      return HorizontalBucketMotor.getPower();
+   }
+
+   //--------------------------------------------------------------------------
+   // NAME: GetVerticalBucketMotorPower
+   // DESC: Access the horizontal bucket motor's power level.
+   //--------------------------------------------------------------------------
+   double GetVerticalalBucketMotorPower()
+   {
+      return VerticalBucketMotor.getPower();
+   }
 
    //--------------------------------------------------------------------------
    // NAME: SetMotorPower

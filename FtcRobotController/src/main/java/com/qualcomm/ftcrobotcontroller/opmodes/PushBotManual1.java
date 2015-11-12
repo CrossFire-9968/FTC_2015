@@ -108,11 +108,12 @@ public class PushBotManual1 extends PushBotTelemetry
         // The setPosition methods write the motor power values to the Servo
         // class, but the positions aren't applied until this method ends.
         //
-        if (gamepad1.x)
+//        if (gamepad1.x)
+       if (gamepad1.right_bumper)
         {
             m_hand_position (a_hand_position () + 0.05);
         }
-        else if (gamepad1.b)
+        else if (gamepad1.left_bumper)
         {
             m_hand_position (a_hand_position () - 0.05);
         }

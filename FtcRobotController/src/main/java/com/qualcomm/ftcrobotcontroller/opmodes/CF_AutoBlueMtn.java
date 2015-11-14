@@ -149,13 +149,14 @@ public class CF_AutoBlueMtn extends CF_Hardware
                 }
                 break;
             case 3:
+                run_using_encoders ();
                 set_drive_power(0.25f, -0.25f);
 
                 if(have_drive_encoders_reached(1000, -1000)){
                     reset_drive_encoders();
                     set_drive_power(0.0f, 0.0f);
 
-                   
+
                 }
                 v_state++;
                 break;
@@ -166,6 +167,7 @@ public class CF_AutoBlueMtn extends CF_Hardware
                 }
                 break;
             case 5:
+                run_using_encoders ();
                 set_drive_power(0.25f, 0.25f);
 
                 if(have_drive_encoders_reached(4717, 4717)) {
@@ -183,6 +185,7 @@ public class CF_AutoBlueMtn extends CF_Hardware
                  }
                 break;
             case 7:
+                run_using_encoders ();
                 set_drive_power(0.25f, 0.25f);
 
                 if(have_drive_encoders_reached(1000, -1000)){
@@ -197,6 +200,7 @@ public class CF_AutoBlueMtn extends CF_Hardware
                 }
                 break;
             case 9:
+                run_using_encoders ();
                 set_drive_power(0.25f, 0.25f);
 
                 if(have_drive_encoders_reached(4354, 4354)){
@@ -211,6 +215,7 @@ public class CF_AutoBlueMtn extends CF_Hardware
                 // The autonomous actions have been accomplished (i.e. the state has
                 // transitioned into its final state.
                 //
+                v_state = 20;
                 break;
         }
         // Realign the motors
@@ -226,6 +231,7 @@ public class CF_AutoBlueMtn extends CF_Hardware
         int cfRightCount = a_right_encoder_count();
 
         //update_telemetry (); // Update common telemetry
+        // If state = 20, that means it has gotten to the default state.
         telemetry.addData ("18", "State: " + v_state);
         //This updates the encoder state for the left encoder
         telemetry.addData("19", "Left Count: " + cfLeftCount);

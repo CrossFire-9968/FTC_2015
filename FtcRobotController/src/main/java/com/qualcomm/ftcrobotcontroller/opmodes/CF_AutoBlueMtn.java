@@ -112,7 +112,7 @@ public class CF_AutoBlueMtn extends CF_Hardware
                 //
                 // Start the drive wheel motors at full power.
                 //
-                set_drive_power (0.25f, 0.25f);
+                set_drive_power (1.0f, 1.0f);
 
                 // Have the motor shafts turned the required amount?
                 //
@@ -143,16 +143,16 @@ public class CF_AutoBlueMtn extends CF_Hardware
             // Wait...
             //
             case 2:
-                if (have_drive_encoders_reset ())
+                if (have_drive_encoders_reset())
                 {
                     v_state++;
                 }
                 break;
             case 3:
                 run_using_encoders();
-                set_drive_power(0.25f, -0.25f);
+                set_drive_power(1.0f, -1.0f);
 
-                if(have_drive_encoders_reached(500, -500)){
+                if(have_drive_encoders_reached(1000, -1000)){
                     reset_drive_encoders();
                     set_drive_power(0.0f, 0.0f);
                     v_state++;
@@ -168,7 +168,7 @@ public class CF_AutoBlueMtn extends CF_Hardware
                 break;
             case 5:
                 run_using_encoders();
-                set_drive_power(0.25f, 0.25f);
+                set_drive_power(1.0f, 1.0f);
 
                 if(have_drive_encoders_reached(4717, 4717)) {
                     reset_drive_encoders();
@@ -182,37 +182,37 @@ public class CF_AutoBlueMtn extends CF_Hardware
             case 6:
                 if(have_drive_encoders_reset());
                  {
-                v_state++;
+                    v_state++;
                  }
                 break;
             case 7:
                 run_using_encoders();
-                set_drive_power(0.25f, 0.25f);
+                set_drive_power(1.0f, -1.0f);
 
-                if(have_drive_encoders_reached(1000, -1000)){
-                    reset_drive_encoders();
+                if(have_drive_encoders_reached(4000, 4000)){
+                    //reset_drive_encoders();
                     set_drive_power(0.0f, 0.0f);
                     v_state++;
                 }
 
-                break;
-            case 8:
-                if (have_drive_encoders_reset()){
-                    v_state++;
-                }
-                break;
-            case 9:
-                run_using_encoders();
-                set_drive_power(0.25f, 0.25f);
-
-                if(have_drive_encoders_reached(4354, 4354)){
-                    reset_drive_encoders();
-                    set_drive_power(0.0f, 0.0f);
-                    v_state++;
-                }
-
-
-                break;
+                //break;
+//            case 8:
+//                if (have_drive_encoders_reset()){
+//                    v_state++;
+//                }
+//                break;
+//            case 9:
+//                run_using_encoders();
+//                set_drive_power(1.0f, 1.0f);
+//
+//                if(have_drive_encoders_reached(4354, 4354)){
+//                    reset_drive_encoders();
+//                    set_drive_power(0.0f, 0.0f);
+//                    v_state++;
+//                }
+//
+//
+//                break;
 
             default:
                 //

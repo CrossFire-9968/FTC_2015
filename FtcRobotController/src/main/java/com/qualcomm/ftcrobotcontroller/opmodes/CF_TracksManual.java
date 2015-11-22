@@ -30,6 +30,8 @@ public class CF_TracksManual extends CF_Hardware
 
       // Method for operating ZipLineServo
       this.ZipLineServo();
+
+      this.UpdateTelemetry();
    }
 
    //--------------------------------------------------------------------------
@@ -40,66 +42,64 @@ public class CF_TracksManual extends CF_Hardware
    //--------------------------------------------------------------------------
    private void motorControl()
    {
-      // Invert sign of motor values from game pads
+      float powerLevelDrive1;
+      float powerLevelDrive2;
       float Gp1_LeftStickY = gamepad1.left_stick_y;
       float Gp1_RightStickY = gamepad1.right_stick_y;
       boolean Gp1_DPadUp = gamepad1.dpad_up;
       boolean Gp1_DPadDown = gamepad1.dpad_down;
       boolean Gp1_DPadLeft = gamepad1.dpad_left;
       boolean Gp1_DPadRight = gamepad1.dpad_right;
+//      float Gp2_LeftStickY = gamepad2.left_stick_y;
+//      float Gp2_RightStickX = gamepad2.right_stick_x;
 
-      // Change power multiplier based on trigger pressed
-      if (Gp1_DPadUp == true)
+      // Change power multiplier based on D-Pad selection
+      if (Gp1_DPadUp)
       {
-         PowerGain = 0.10f;
+         PowerGain = 1.00f;
       }
-      else if (Gp1_DPadRight == true)
+      else if (Gp1_DPadRight)
       {
-         PowerGain = 0.20f;
+         PowerGain = 0.60f;
       }
-      else if (Gp1_DPadDown == true)
+      else if (Gp1_DPadDown)
+      {
+         PowerGain = 0.45f;
+      }
+      else if (Gp1_DPadLeft)
       {
          PowerGain = 0.30f;
-      }
-      else if (Gp1_DPadLeft == true)
-      {
-         PowerGain = 0.40f;
       }
 
       // Used to change driving direction
       if (gamepad1.a)
       {
-         DriveReverse();
+         SetDriveConfig(DriveConfig_E.DOZER);
       }
 
       if (gamepad1.y)
       {
-         DriveForward();
+         SetDriveConfig(DriveConfig_E.MOUNTAIN);
       }
 
       // Convert game pad values to meaningful motor power values.  X and Y
       // are range limited to +/-1.  Negative values are when joystick pushed
       // forward. DC motors are scaled to make it easier to control at slower speeds
-      float LeftTrackMotorPower = (float) ScaleDriveMotorPower(Gp1_LeftStickY) * PowerGain;
-      float RightTrackMotorPower = (float) ScaleDriveMotorPower(Gp1_RightStickY) * PowerGain;
+      powerLevelDrive1 = (float)ScaleDriveMotorPower(Gp1_LeftStickY) * PowerGain;
+      powerLevelDrive2 = (float)ScaleDriveMotorPower(Gp1_RightStickY) * PowerGain;
 
       // Turn motors on
-      SetMotorPower(LeftTrackMotorPower, RightTrackMotorPower);
-
-      // Send motor telemetry data to the driver station
-      telemetry.addData("01", "Left Track Power: " + GetLeftTrackMotorPower());
-      telemetry.addData("02", "Right Track Power: " + GetRightTrackMotorPower());
-      telemetry.addData("10", "GP1 Left: " + Gp1_LeftStickY);
-      telemetry.addData("11", "GP1 Right: " + Gp1_RightStickY);
-      telemetry.addData("03", "PowerGain: " + PowerGain);
-
+      SetDriveMotorPower(powerLevelDrive1, powerLevelDrive2);
+//      SetBucketMotorPower(VerticalBucketMotorPower, HorizontalBucketMotorPower);
    }
 
-   private void bucketMotorControl()
-   {
-      float Gp1_LeftStickY = gamepad1.left_stick_y;
-      float Gp1_RightStickX = gamepad1.right_stick_x;
-   }
+//   private void bucketMotorControl()
+//   {
+//      float Gp1_LeftStickY = gamepad1.left_stick_y;
+//      float Gp1_RightStickX = gamepad1.right_stick_x;
+//      float VerticalBucketMotorPower = (float) ScaleDriveMotorPower(Gp2_LeftStickY);
+//      float HorizontalBucketMotorPower = (float) ScaleDriveMotorPower(Gp2_RightStickX);
+//   }
 
    //--------------------------------------------------------------------------
    // NAME: ZipLineServo
@@ -107,20 +107,42 @@ public class CF_TracksManual extends CF_Hardware
    //--------------------------------------------------------------------------
    private void ZipLineServo()
    {
-      // Servo Motors Obtain the current values of the gamepad 'RightBumper' and 'LeftBumper' buttons.
+      // Servo Motors Obtain the current values of the game pad 'RightBumper' and 'LeftBumper' buttons.
       // The clip method guarantees the value never exceeds the allowable
       // range.
       if (gamepad1.right_bumper)
       {
-         SetZipLineServoPosition(GetZipLineServoPosition() + 0.05);
+         SetZipLineServoPosition(GetZipLineServoPosition() + 0.005);
       }
       else if (gamepad1.left_bumper)
       {
-         SetZipLineServoPosition(GetZipLineServoPosition() - 0.05);
+         SetZipLineServoPosition(GetZipLineServoPosition() - 0.005);
       }
+   }
 
+
+   //--------------------------------------------------------------------------
+   // NAME: UpdateTelemetry
+   // DESC: Method for updating data displayed on phone
+   //--------------------------------------------------------------------------
+   public void UpdateTelemetry()
+   {
       // Send telemetry data to the driver station.
-      telemetry.addData("04", "Zip Line Servo: " + GetZipLineServoPosition());
+      telemetry.addData("01", "version: v" + 0.5);
+//      telemetry.addData("01", "Left Track Power: " + GetDrivePowerMotor1());
+//      telemetry.addData("02", "Right Track Power: " + GetDriveMotorPower2());
+//      telemetry.addData("03", "PowerGain: " + PowerGain);
+      telemetry.addData("04", "ZipLineServo: " + GetZipLineServoPosition());
+      switch (DriveConfig)
+      {
+         case MOUNTAIN:
+            telemetry.addData("05", "Drive Mode: MOUNTAIN");
+            break;
+
+         case DOZER:
+            telemetry.addData("05", "Drive Mode: DOZER");
+            break;
+      }
    }
 }
 

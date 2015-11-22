@@ -7,18 +7,27 @@ import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.Range;
 
 
+
 /**
  * Created by jd72958 on 10/18/2015.
  */
 public class CF_Hardware extends OpMode
 {
-   private DcMotor LeftTrackMotor;
-   private DcMotor RightTrackMotor;
+   private DcMotor DriveMotor1;
+   private DcMotor DriveMotor2;
    private Servo ZipLineServo;
    private String WarningMessageString;
    private boolean WarningGenerated = false;
-   private DcMotor VerticalBucketMotor;
-   private DcMotor HorizontalBucketMotor;
+//   private DcMotor VerticalBucketMotor;
+//   private DcMotor HorizontalBucketMotor;
+
+   public enum DriveConfig_E
+   {
+      MOUNTAIN,
+      DOZER
+   }
+
+   public DriveConfig_E DriveConfig = DriveConfig_E.DOZER;
 
    //--------------------------------------------------------------------------
    // NAME: CF_Hardware
@@ -42,36 +51,17 @@ public class CF_Hardware extends OpMode
       // Note that the names of the devices (i.e. arguments to the get method)
       // must match the names specified in the configuration file created by
       // the FTC Robot Controller (Settings-->Configure Robot).
-      LeftTrackMotor = hardwareMap.dcMotor.get("LeftTrackMotor");
-      RightTrackMotor = hardwareMap.dcMotor.get("RightTrackMotor");
+      DriveMotor1 = hardwareMap.dcMotor.get("DriveMotor1");
+      DriveMotor2 = hardwareMap.dcMotor.get("DriveMotor2");
       ZipLineServo =  hardwareMap.servo.get("ZipLineServo");
-      HorizontalBucketMotor = hardwareMap.dcMotor.get("HorizontalBucketMotor");
-      VerticalBucketMotor = hardwareMap.dcMotor.get("VerticalBucketMotor");
+//      HorizontalBucketMotor = hardwareMap.dcMotor.get("HorizontalBucketMotor");
+//      VerticalBucketMotor = hardwareMap.dcMotor.get("VerticalBucketMotor");
 
       // Reverse right side motors so left and right motors spin same direction on robot
-     RightTrackMotor.setDirection(DcMotor.Direction.REVERSE);
-
+      DriveMotor1.setDirection(DcMotor.Direction.FORWARD);
+      DriveMotor2.setDirection(DcMotor.Direction.REVERSE);
    }
 
-   //--------------------------------------------------------------------------
-   // NAME: DriveReverse
-   // DESC: Changes drive motor direction
-   //--------------------------------------------------------------------------
-   public void DriveReverse()
-   {
-      LeftTrackMotor.setDirection(DcMotor.Direction.REVERSE);
-      RightTrackMotor.setDirection(DcMotor.Direction.FORWARD);
-   }
-
-   //--------------------------------------------------------------------------
-   // NAME: DriveForward
-   // DESC: Changes drive motor direction
-   //--------------------------------------------------------------------------
-   public void DriveForward()
-   {
-      RightTrackMotor.setDirection(DcMotor.Direction.REVERSE);
-      LeftTrackMotor.setDirection(DcMotor.Direction.FORWARD);
-   }
 
    //--------------------------------------------------------------------------
    // NAME: start
@@ -119,65 +109,65 @@ public class CF_Hardware extends OpMode
    // NAME: scale_motor_power
    // DESC: Scale the joystick input using a nonlinear algorithm.
    //--------------------------------------------------------------------------
-   double ScaleDriveMotorPower(double p_power)
+   public double ScaleDriveMotorPower(double powerInput)
    {
-      // Assume no scaling.
-      double l_scale = 0.0f;
+      double scaledPower = 0.0f;
+      final int numPointsInMap = 16;
 
-      // Ensure the values are legal.
-      double l_power = Range.clip(p_power, -1, 1);
+      // Ensure the values make sense.  Clip the values to max/min values
+      double clippedPower = Range.clip(powerInput, -1, 1);
 
       // Array used to map joystick input to motor output
-      double[] l_array = {0.00, 0.05, 0.09, 0.10, 0.12,
-         0.15, 0.18, 0.24, 0.30, 0.36,
-         0.43, 0.50, 0.60, 0.72, 0.85,
-         1.00, 1.00};
+      double[] powerArray =  {0.00, 0.05, 0.09, 0.10, 0.12, 0.15, 0.18, 0.24, 0.30,
+                              0.36, 0.43, 0.50, 0.60, 0.72, 0.85, 1.00, 1.00};
 
       // Get the corresponding index for the specified argument/parameter.
-      int l_index = (int) (l_power * 16.0);
+      int index = (int)(clippedPower * numPointsInMap);
 
-      // Limit the index to the number of table entries
-      if (l_index < 0)
+      // Array indexes can only be positive so we need to drop the negative
+      if (index < 0)
       {
-         l_index = -l_index;
+         index = -index;
       }
-      else if (l_index > 16)
+
+      // Limit indexes to actual size of array so we don't overflow
+      if (index > numPointsInMap)
       {
-         l_index = 16;
+         index = numPointsInMap;
       }
 
       // Handle negative power values as the table only had positive values
-      if (l_power < 0)
+      if (clippedPower < 0)
       {
-         l_scale = -l_array[l_index];
+         scaledPower = -powerArray[index];
       }
       else
       {
-         l_scale = l_array[l_index];
+         scaledPower = powerArray[index];
       }
 
-      return l_scale;
+      return scaledPower;
    }
 
 
 
    //--------------------------------------------------------------------------
-   // NAME: GetLeftTrackMotorPower
+   // NAME: GetDrivePowerMotor1
    // DESC: Access the left track motor's power level.
    //--------------------------------------------------------------------------
-   double GetLeftTrackMotorPower()
+   public double GetDrivePowerMotor1()
    {
-      return LeftTrackMotor.getPower();
+      return DriveMotor1.getPower();
    }
 
 
    //--------------------------------------------------------------------------
-   // NAME: GetRightTrackMotorPower
+   // NAME: GetDriveMotorPower2
    // DESC: Access the right track motor's power level.
    //--------------------------------------------------------------------------
-   double GetRightTrackMotorPower()
+   public double GetDriveMotorPower2()
    {
-       return RightTrackMotor.getPower();
+       return DriveMotor2.getPower();
    }
 
 
@@ -185,63 +175,125 @@ public class CF_Hardware extends OpMode
    // NAME: GetHorizontalBucketMotorPower
    // DESC: Access the horizontal bucket motor's power level.
    //--------------------------------------------------------------------------
-   double GetHorizontalBucketMotorPower()
-   {
-      return HorizontalBucketMotor.getPower();
-   }
+//   double GetHorizontalBucketMotorPower()
+//   {
+//      return HorizontalBucketMotor.getPower();
+//   }
+//
+//   //--------------------------------------------------------------------------
+//   // NAME: GetVerticalBucketMotorPower
+//   // DESC: Access the horizontal bucket motor's power level.
+//   //--------------------------------------------------------------------------
+//   double GetVerticalalBucketMotorPower()
+//   {
+//      return VerticalBucketMotor.getPower();
+//   }
+
 
    //--------------------------------------------------------------------------
-   // NAME: GetVerticalBucketMotorPower
-   // DESC: Access the horizontal bucket motor's power level.
+   // NAME: SetDriveConfig
+   // DESC: Set the drive configuration enum.  Used for switching between
+   //       custom drive controls.
    //--------------------------------------------------------------------------
-   double GetVerticalalBucketMotorPower()
+   public void SetDriveConfig(DriveConfig_E value)
    {
-      return VerticalBucketMotor.getPower();
+      DriveConfig = value;
+
+      // swap motor direction based on drive configuration
+      switch (DriveConfig)
+      {
+         case MOUNTAIN:
+            DriveMotor1.setDirection(DcMotor.Direction.FORWARD);
+            DriveMotor2.setDirection(DcMotor.Direction.REVERSE);
+            break;
+
+         case DOZER:
+         default:
+            DriveMotor1.setDirection(DcMotor.Direction.REVERSE);
+            DriveMotor2.setDirection(DcMotor.Direction.FORWARD);
+            break;
+      }
    }
 
+
    //--------------------------------------------------------------------------
-   // NAME: SetMotorPower
+   // NAME: SetDriveMotorPower
    // DESC: Scale the joystick input using a nonlinear algorithm.
    //--------------------------------------------------------------------------
-   void SetMotorPower(double leftMotorPower, double rightMotorPower)
+   public void SetDriveMotorPower(double powerLevel1, double powerLevel2)
    {
-      // Set motor power levels
-      if (LeftTrackMotor != null)
+      double powerMotor1;
+      double powerMotor2;
+
+      // Assign motor power to appropriate side.
+      switch (DriveConfig)
       {
-         LeftTrackMotor.setPower(leftMotorPower);
+         case MOUNTAIN:
+            powerMotor1 = powerLevel1;
+            powerMotor2 = powerLevel2;
+            break;
+
+         case DOZER:
+         default:
+            powerMotor1 = powerLevel2;
+            powerMotor2 = powerLevel1;
+            break;
       }
 
-      if (RightTrackMotor != null)
+      // Set motor power levels
+      if (DriveMotor1 != null)
       {
-         RightTrackMotor.setPower(rightMotorPower);
+         DriveMotor1.setPower(powerMotor1);
+      }
+
+      if (DriveMotor2 != null)
+      {
+         DriveMotor2.setPower(powerMotor2);
       }
    }
 
+   //--------------------------------------------------------------------------
+   // NAME: SetBucketMotorPower
+   // DESC: Scale the joystick input using a nonlinear algorithm.
+   //--------------------------------------------------------------------------
+//   void SetBucketMotorPower(double VerticalBucketMotorPower, double HorizontalBucketMotorPower)
+//   {
+//      if (VerticalBucketMotor != null)
+//      {
+//         VerticalBucketMotor.setPower(VerticalBucketMotorPower);
+//      }
+//
+//      if (HorizontalBucketMotor != null)
+//      {
+//         HorizontalBucketMotor.setPower(HorizontalBucketMotorPower);
+//      }
+//   }
 
    //--------------------------------------------------------------------------
    // NAME: SetZipLineServoPosition
    // DESC: Scale the joystick input using a nonlinear algorithm.
    //--------------------------------------------------------------------------
-   void SetZipLineServoPosition(double servoPositionDesired)
+   public void SetZipLineServoPosition(double servoPositionDesired)
    {
       // Ensure the specific value is legal.
-      double servoPositionActual = Range.clip(servoPositionDesired, Servo.MIN_POSITION, Servo.MAX_POSITION);
+      double servoPositionActual = Range.clip(servoPositionDesired, 0, 1);
 
-      // Set servo power levels
-      if (ZipLineServo != null)
-      {
-         try
-         {
+//      // Set servo power levels
+//      if (ZipLineServo != null)
+//      {
+//         try
+//         {
             ZipLineServo.setPosition(servoPositionActual);
-         }
-
-         catch (Exception p_exeception)
-         {
-            WarningMessage("ZipLineServo");
-            DbgLog.msg(p_exeception.getLocalizedMessage());
-            ZipLineServo = null;
-         }
-      }
+            telemetry.addData("02", "servoPositionActual: " + servoPositionDesired);
+//         }
+//
+//         catch (Exception p_exeception)
+//         {
+//            WarningMessage("ZipLineServo");
+//            DbgLog.msg(p_exeception.getLocalizedMessage());
+//            ZipLineServo = null;
+//         }
+//      }
    }
 
 
@@ -249,7 +301,7 @@ public class CF_Hardware extends OpMode
    // NAME: GetZipLineServoPosition
    // DESC:
    //--------------------------------------------------------------------------
-   double GetZipLineServoPosition()
+   public double GetZipLineServoPosition()
    {
       double position = 0.0;
 
@@ -258,14 +310,16 @@ public class CF_Hardware extends OpMode
          position = ZipLineServo.getPosition();
       }
 
+      telemetry.addData("03", "position: " + ZipLineServo.getPosition());
       return position;
    }
+
 
    //--------------------------------------------------------------------------
    // NAME: WarningMessage
    // DESC:
    //--------------------------------------------------------------------------
-   void WarningMessage (String exceptionMessage)
+   public void WarningMessage (String exceptionMessage)
    {
       if (WarningGenerated)
       {
@@ -275,6 +329,5 @@ public class CF_Hardware extends OpMode
       WarningMessageString += exceptionMessage;
 
    } // m_warning_message
-
 }
 

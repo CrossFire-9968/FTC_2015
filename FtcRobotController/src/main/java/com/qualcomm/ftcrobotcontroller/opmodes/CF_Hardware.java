@@ -16,6 +16,7 @@ public class CF_Hardware extends OpMode
    private DcMotor DriveMotor1;
    private DcMotor DriveMotor2;
    private Servo ZipLineServo;
+   private Servo BucketServo;
    private String WarningMessageString;
    private boolean WarningGenerated = false;
 //   private DcMotor VerticalBucketMotor;
@@ -54,12 +55,17 @@ public class CF_Hardware extends OpMode
       DriveMotor1 = hardwareMap.dcMotor.get("DriveMotor1");
       DriveMotor2 = hardwareMap.dcMotor.get("DriveMotor2");
       ZipLineServo =  hardwareMap.servo.get("ZipLineServo");
+      BucketServo = hardwareMap.servo.get ("BucketServo");
+
 //      HorizontalBucketMotor = hardwareMap.dcMotor.get("HorizontalBucketMotor");
 //      VerticalBucketMotor = hardwareMap.dcMotor.get("VerticalBucketMotor");
 
       // Reverse right side motors so left and right motors spin same direction on robot
       DriveMotor1.setDirection(DcMotor.Direction.FORWARD);
       DriveMotor2.setDirection(DcMotor.Direction.REVERSE);
+
+      SetBucketServoPosition(1.0);
+      SetZipLineServoPosition(1.0);
    }
 
 
@@ -278,24 +284,23 @@ public class CF_Hardware extends OpMode
       // Ensure the specific value is legal.
       double servoPositionActual = Range.clip(servoPositionDesired, 0, 1);
 
-//      // Set servo power levels
-//      if (ZipLineServo != null)
-//      {
-//         try
-//         {
+      // Set servo power levels
+      if (ZipLineServo != null)
+      {
+         try
+         {
             ZipLineServo.setPosition(servoPositionActual);
             telemetry.addData("02", "servoPositionActual: " + servoPositionDesired);
-//         }
-//
-//         catch (Exception p_exeception)
-//         {
-//            WarningMessage("ZipLineServo");
-//            DbgLog.msg(p_exeception.getLocalizedMessage());
-//            ZipLineServo = null;
-//         }
-//      }
-   }
+         }
 
+         catch (Exception p_exeception)
+         {
+            WarningMessage("ZipLineServo");
+            DbgLog.msg(p_exeception.getLocalizedMessage());
+            ZipLineServo = null;
+         }
+      }
+   }
 
    //--------------------------------------------------------------------------
    // NAME: GetZipLineServoPosition
@@ -314,6 +319,49 @@ public class CF_Hardware extends OpMode
       return position;
    }
 
+   //--------------------------------------------------------------------------
+   // NAME: SetBucketServoPosition
+   // DESC: Scale the joystick input using a nonlinear algorithm.
+   //--------------------------------------------------------------------------
+   public void SetBucketServoPosition(double servoPositionDesired)
+   {
+      // Ensure the specific value is legal.
+      double servoPositionActual = Range.clip(servoPositionDesired, 0, 1);
+
+      // Set servo power levels
+      if (BucketServo != null)
+      {
+         try
+         {
+            BucketServo.setPosition(servoPositionActual);
+            telemetry.addData("02", "servoPositionActual: " + servoPositionDesired);
+         }
+
+         catch (Exception p_exeception)
+         {
+            WarningMessage("BucketServo");
+            DbgLog.msg(p_exeception.getLocalizedMessage());
+            BucketServo = null;
+         }
+      }
+   }
+
+   //--------------------------------------------------------------------------
+   // NAME: GetBucketServoPosition
+   // DESC:
+   //--------------------------------------------------------------------------
+   public double GetBucketServoPosition()
+   {
+      double position = 0.0;
+
+      if (BucketServo != null)
+      {
+         position = BucketServo.getPosition();
+      }
+
+      telemetry.addData("03", "position: " + BucketServo.getPosition());
+      return position;
+   }
 
    //--------------------------------------------------------------------------
    // NAME: WarningMessage

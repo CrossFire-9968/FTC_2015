@@ -29,7 +29,7 @@ public class CF_TracksManual extends CF_Hardware
       this.motorControl();
 
       // Method for operating ZipLineServo
-      this.ZipLineServo();
+      this.ServiceServos();
 
       this.UpdateTelemetry();
    }
@@ -50,7 +50,7 @@ public class CF_TracksManual extends CF_Hardware
       boolean Gp1_DPadDown = gamepad1.dpad_down;
       boolean Gp1_DPadLeft = gamepad1.dpad_left;
       boolean Gp1_DPadRight = gamepad1.dpad_right;
-//      float Gp2_LeftStickY = gamepad2.left_stick_y;
+      float Gp2_LeftStickY = gamepad2.left_stick_y;
 //      float Gp2_RightStickX = gamepad2.right_stick_x;
 
       // Change power multiplier based on D-Pad selection
@@ -105,18 +105,27 @@ public class CF_TracksManual extends CF_Hardware
    // NAME: ZipLineServo
    // DESC: Method for operating servo to hit zip line triggers
    //--------------------------------------------------------------------------
-   private void ZipLineServo()
+   private void ServiceServos()
    {
       // Servo Motors Obtain the current values of the game pad 'RightBumper' and 'LeftBumper' buttons.
       // The clip method guarantees the value never exceeds the allowable
       // range.
-      if (gamepad1.right_bumper)
+      if (gamepad2.right_bumper)
       {
          SetZipLineServoPosition(GetZipLineServoPosition() + 0.005);
       }
-      else if (gamepad1.left_bumper)
+      else if (gamepad2.left_bumper)
       {
          SetZipLineServoPosition(GetZipLineServoPosition() - 0.005);
+      }
+
+      if (gamepad2.dpad_down)
+      {
+         SetBucketServoPosition(GetBucketServoPosition() + 0.005);
+      }
+      else if (gamepad2.dpad_up)
+      {
+         SetBucketServoPosition(GetBucketServoPosition() - 0.005);
       }
    }
 
@@ -128,7 +137,7 @@ public class CF_TracksManual extends CF_Hardware
    public void UpdateTelemetry()
    {
       // Send telemetry data to the driver station.
-      telemetry.addData("01", "version: v" + 0.5);
+      telemetry.addData("01", "version: v" + 0.6);
 //      telemetry.addData("01", "Left Track Power: " + GetDrivePowerMotor1());
 //      telemetry.addData("02", "Right Track Power: " + GetDriveMotorPower2());
 //      telemetry.addData("03", "PowerGain: " + PowerGain);

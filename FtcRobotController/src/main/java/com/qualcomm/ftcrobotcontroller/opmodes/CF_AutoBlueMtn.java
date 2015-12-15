@@ -254,7 +254,7 @@ public class CF_AutoBlueMtn extends CF_Hardware
                 //
                 // Start the drive wheel motors at full power.
                 //
-                set_drive_power (0.25f, 0.25f);
+                set_drive_power (0.20f, 0.20f);
 
                 // Have the motor shafts turned the required amount?
                 //
@@ -294,7 +294,7 @@ public class CF_AutoBlueMtn extends CF_Hardware
                 run_using_encoders();
                 set_drive_power(-0.25f, 0.25f);
 
-                if(have_drive_encoders_reached(-1350, 1350)){
+                if(have_drive_encoders_reached(-1450, 1450)){
                     reset_drive_encoders();
                     set_drive_power(0.0f, 0.0f);
                     v_state++;

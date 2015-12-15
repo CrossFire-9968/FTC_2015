@@ -12,7 +12,7 @@ package com.qualcomm.ftcrobotcontroller.opmodes;
  * @author Ryley Hindman
  * @version 2015-08-01-06-01
  */
-public class CF_AutoBlueMtn extends CF_Hardware
+public class CF_AutoRedMtn extends CF_Hardware
 
 {
     //--------------------------------------------------------------------------
@@ -24,7 +24,7 @@ public class CF_AutoBlueMtn extends CF_Hardware
      *
      * The system calls this member when the class is instatiated.
      */
-    public CF_AutoBlueMtn()
+    public CF_AutoRedMtn()
 
     {
         //
@@ -292,9 +292,9 @@ public class CF_AutoBlueMtn extends CF_Hardware
                 break;
             case 3:
                 run_using_encoders();
-                set_drive_power(-0.25f, 0.25f);
+                set_drive_power(0.25f, -0.25f);
 
-                if(have_drive_encoders_reached(-1450, 1450)){
+                if(have_drive_encoders_reached(1450, -1450)){
                     reset_drive_encoders();
                     set_drive_power(0.0f, 0.0f);
                     v_state++;
@@ -321,13 +321,6 @@ public class CF_AutoBlueMtn extends CF_Hardware
                 }
 
                 break;
-            case 6:
-                //SetBucketServoPosition(GetBucketServoPosition() + 0.005);
-                break;
-            case 7:
-                //SetBucketServoPosition(GetBucketServoPosition() + 0.005);
-                break;
-            
 //
 //            case 6:
 //                if(have_drive_encoders_reset())

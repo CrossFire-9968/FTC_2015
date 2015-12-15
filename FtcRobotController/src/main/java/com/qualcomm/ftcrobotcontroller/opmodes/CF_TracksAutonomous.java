@@ -176,9 +176,9 @@ public class CF_TracksAutonomous extends CF_Hardware
         //This updates the encoder state for the right encoder
         telemetry.addData("20", "Right Count: " + cfRightCount);
 
-        telemetry.addData("21", "Left Drive Power: " + GetLeftTrackMotorPower());
+        telemetry.addData("21", "Left Drive Power: " + GetDriveMotorPower1());
 
-        telemetry.addData("22", "Right Drive Power: " + GetRightTrackMotorPower());
+        telemetry.addData("22", "Right Drive Power: " + GetDriveMotorPower2());
     } // loop
 
     //--------------------------------------------------------------------------

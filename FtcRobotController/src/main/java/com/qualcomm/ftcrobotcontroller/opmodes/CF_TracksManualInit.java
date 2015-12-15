@@ -3,7 +3,7 @@ package com.qualcomm.ftcrobotcontroller.opmodes;
 /**
  * Created by Lauren_FTC on 10/18/2015.
  */
-public class CF_TracksManual extends CF_Hardware
+public class CF_TracksManualInit extends CF_HardwareInit
 {
    private float PowerGain = 0;
 
@@ -11,7 +11,7 @@ public class CF_TracksManual extends CF_Hardware
    // NAME: FuzzyBotManual4x4
    // DESC: Constructor called when the class is instantiated.
    //--------------------------------------------------------------------------
-   public CF_TracksManual()
+   public CF_TracksManualInit()
    {
       // Initialize base classes. All via self-construction.
       // Initialize class members. All via self-construction.

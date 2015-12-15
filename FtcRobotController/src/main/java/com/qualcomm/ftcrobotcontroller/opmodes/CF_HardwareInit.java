@@ -11,13 +11,13 @@ import com.qualcomm.robotcore.util.Range;
 /**
  * Created by jd72958 on 10/18/2015.
  */
-public class CF_Hardware extends OpMode
+public class CF_HardwareInit extends OpMode
 {
    private DcMotor DriveMotor1;
    private DcMotor DriveMotor2;
    private Servo ZipLineServo;
    private Servo BucketServo;
-//   private String WarningMessageString;
+   //   private String WarningMessageString;
    private boolean WarningGenerated = false;
 //   private DcMotor VerticalBucketMotor;
 //   private DcMotor HorizontalBucketMotor;
@@ -34,7 +34,7 @@ public class CF_Hardware extends OpMode
    // NAME: CF_Hardware
    // DESC: Constructor called when the class is instantiated.
    //--------------------------------------------------------------------------
-   public CF_Hardware()
+   public CF_HardwareInit()
    {
       // Initialize base classes.  All via self-construction.
       // Initialize class members.  All via self-construction.
@@ -64,8 +64,10 @@ public class CF_Hardware extends OpMode
       DriveMotor1.setDirection(DcMotor.Direction.FORWARD);
       DriveMotor2.setDirection(DcMotor.Direction.REVERSE);
 
-      SetBucketServoPosition(1.0);
-      SetZipLineServoPosition(1.0);
+      double initBucketServoPosition = GetBucketServoPosition();
+      double initZipLineServoPosition = GetZipLineServoPosition();
+      SetBucketServoPosition(initBucketServoPosition);
+      SetZipLineServoPosition(initZipLineServoPosition);
    }
 
 

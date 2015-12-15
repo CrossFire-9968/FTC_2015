@@ -64,8 +64,8 @@ public class FtcOpModeRegister implements OpModeRegister
       manager.register("PushBotManual", PushBotManual.class);
       manager.register("CF_TracksManual", CF_TracksManual.class);
       manager.register("CF_AutoBlueMtn", CF_AutoBlueMtn.class);
-
-
+      manager.register("CF_TracksManualRed", CF_TracksManualRed.class);
+      manager.register("CF_TracksManualInit", CF_TracksManualInit.class);
     /*
      * Uncomment any of the following lines if you want to register an op mode.
      */

@@ -58,12 +58,13 @@ public class FtcOpModeRegister implements OpModeRegister
      */
 
       manager.register("NullOp", NullOp.class);
-      manager.register("MatrixK9TeleOp", MatrixK9TeleOp.class);
-      manager.register("K9TeleOp", K9TeleOp.class);
+
+
       manager.register("PushBotAuto", PushBotAuto.class);
       manager.register("PushBotManual", PushBotManual.class);
       manager.register("CF_TracksManual", CF_TracksManual.class);
       manager.register("CF_AutoBlueMtn", CF_AutoBlueMtn.class);
+      manager.register("CF_AutoRedMtn", CF_AutoRedMtn.class);
       manager.register("CF_TracksManualRed", CF_TracksManualRed.class);
       manager.register("CF_TracksManualInit", CF_TracksManualInit.class);
     /*
@@ -72,9 +73,8 @@ public class FtcOpModeRegister implements OpModeRegister
 
     manager.register("MatrixK9TeleOp", MatrixK9TeleOp.class);
     manager.register("K9TeleOp", K9TeleOp.class);
-    manager.register ("PushBotAuto", PushBotAuto.class);
-    manager.register ("PushBotManual", PushBotManual.class);
-    manager.register("CF_TracksManual", CF_TracksManual.class);
+
+
 
       //manager.register("AdafruitRGBExample", AdafruitRGBExample.class);
       //manager.register("ColorSensorDriver", ColorSensorDriver.class);

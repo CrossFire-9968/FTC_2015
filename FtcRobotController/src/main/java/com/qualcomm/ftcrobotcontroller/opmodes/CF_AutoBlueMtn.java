@@ -294,7 +294,7 @@ public class CF_AutoBlueMtn extends CF_Hardware
                 run_using_encoders();
                 set_drive_power(-0.25f, 0.25f);
 
-                if(have_drive_encoders_reached(-1450, 1450)){
+                if(have_drive_encoders_reached(-1850, 1850)){
                     reset_drive_encoders();
                     set_drive_power(0.0f, 0.0f);
                     v_state++;
@@ -311,7 +311,7 @@ public class CF_AutoBlueMtn extends CF_Hardware
                 break;
             case 5:
                 run_using_encoders();
-                set_drive_power(0.25f, 0.25f);
+                set_drive_power(0.40f, 0.40f);
 
                 if(have_drive_encoders_reached(11612, 11612)) {
                     reset_drive_encoders();
@@ -321,13 +321,16 @@ public class CF_AutoBlueMtn extends CF_Hardware
                 }
 
                 break;
-            case 6:
-                //SetBucketServoPosition(GetBucketServoPosition() + 0.005);
-                break;
+//            case 6:
+//                SetBucketServoPosition(0.15);
+//                SetBucketServoPosition(0.30);
+//                SetBucketServoPosition(0.45);
+//                SetBucketServoPosition(0.60);
+//                break;
             case 7:
                 //SetBucketServoPosition(GetBucketServoPosition() + 0.005);
                 break;
-            
+
 //
 //            case 6:
 //                if(have_drive_encoders_reset())
@@ -395,6 +398,8 @@ public class CF_AutoBlueMtn extends CF_Hardware
         telemetry.addData("21", "Left Drive Power: " + GetDriveMotorPower1());
 
         telemetry.addData("22", "Right Drive Power: " + GetDriveMotorPower2());
+
+        telemetry.addData("23", "Bucket Servo Pos:" + GetBucketServoPosition());
     } // loop
 
     //--------------------------------------------------------------------------

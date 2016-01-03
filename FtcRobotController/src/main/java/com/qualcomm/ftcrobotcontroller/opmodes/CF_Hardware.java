@@ -64,8 +64,8 @@ public class CF_Hardware extends OpMode
       DriveMotor1.setDirection(DcMotor.Direction.FORWARD);
       DriveMotor2.setDirection(DcMotor.Direction.REVERSE);
 
-      SetBucketServoPosition(1.0);
-      SetZipLineServoPosition(1.0);
+      SetBucketServoPosition(0.95);
+      SetZipLineServoPosition(0.4);
    }
 
 

@@ -125,7 +125,7 @@ public class CF_TracksManual extends CF_Hardware
       }
       else if (gamepad2.dpad_up)
       {
-         SetBucketServoPosition(GetBucketServoPosition() - 0.005);
+         SetBucketServoPosition(GetBucketServoPosition() - 0.002);
       }
    }
 

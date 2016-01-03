@@ -262,7 +262,7 @@ public class CF_AutoRedMtn extends CF_Hardware
                 // block will be executed the next time this method is called).
                 //5000 revs = 31 in
 
-                if (have_drive_encoders_reached (13387, 13387))
+                if (have_drive_encoders_reached (13687, 13687))
                 {
                     //
                     // Reset the encoders to ensure they are at a known good value.
@@ -294,7 +294,7 @@ public class CF_AutoRedMtn extends CF_Hardware
                 run_using_encoders();
                 set_drive_power(0.25f, -0.25f);
 
-                if(have_drive_encoders_reached(1450, -1450)){
+                if(have_drive_encoders_reached(1850, -1850)){
                     reset_drive_encoders();
                     set_drive_power(0.0f, 0.0f);
                     v_state++;
@@ -311,7 +311,7 @@ public class CF_AutoRedMtn extends CF_Hardware
                 break;
             case 5:
                 run_using_encoders();
-                set_drive_power(0.25f, 0.25f);
+                set_drive_power(0.40f, 0.40f);
 
                 if(have_drive_encoders_reached(11612, 11612)) {
                     reset_drive_encoders();
@@ -323,11 +323,11 @@ public class CF_AutoRedMtn extends CF_Hardware
                 break;
 //
 //            case 6:
-//                if(have_drive_encoders_reset())
-//                 {
-//                    v_state++;
-//                 }
-//                 break;
+//                SetBucketServoPosition(0.15);
+//                SetBucketServoPosition(0.30);
+//                SetBucketServoPosition(0.45);
+//                SetBucketServoPosition(0.60);
+                     //break;
 //            case 7:
 //                reset_drive_encoders();
 //                run_using_encoders();

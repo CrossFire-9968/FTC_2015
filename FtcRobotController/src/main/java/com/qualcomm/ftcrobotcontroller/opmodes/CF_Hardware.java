@@ -17,6 +17,9 @@ public class CF_Hardware extends OpMode
    private DcMotor DriveMotor2;
    private Servo ZipLineServo;
    private Servo BucketServo;
+   private DcMotor ExtensionMotor;
+   private DcMotor AimMotor;
+
 //   private String WarningMessageString;
    private boolean WarningGenerated = false;
 //   private DcMotor VerticalBucketMotor;
@@ -56,6 +59,8 @@ public class CF_Hardware extends OpMode
       DriveMotor2 = hardwareMap.dcMotor.get("DriveMotor2");
       ZipLineServo = hardwareMap.servo.get("ZipLineServo");
       BucketServo = hardwareMap.servo.get("BucketServo");
+      ExtensionMotor = hardwareMap.dcMotor.get("ExtensionMotor");
+      AimMotor = hardwareMap.dcMotor.get("AimMotor");
 
 //      HorizontalBucketMotor = hardwareMap.dcMotor.get("HorizontalBucketMotor");
 //      VerticalBucketMotor = hardwareMap.dcMotor.get("VerticalBucketMotor");
@@ -63,6 +68,7 @@ public class CF_Hardware extends OpMode
       // Reverse right side motors so left and right motors spin same direction on robot
       DriveMotor1.setDirection(DcMotor.Direction.FORWARD);
       DriveMotor2.setDirection(DcMotor.Direction.REVERSE);
+      ExtensionMotor.setDirection(DcMotor.Direction.REVERSE);
 
       SetBucketServoPosition(0.95);
       SetZipLineServoPosition(0.4);
@@ -177,23 +183,16 @@ public class CF_Hardware extends OpMode
 
 
    //--------------------------------------------------------------------------
-   // NAME: GetHorizontalBucketMotorPower
+   // NAME: GetExtensionMotorPower
    // DESC: Access the horizontal bucket motor's power level.
    //--------------------------------------------------------------------------
-//   double GetHorizontalBucketMotorPower()
-//   {
-//      return HorizontalBucketMotor.getPower();
-//   }
-//
-//   //--------------------------------------------------------------------------
-//   // NAME: GetVerticalBucketMotorPower
-//   // DESC: Access the horizontal bucket motor's power level.
-//   //--------------------------------------------------------------------------
-//   double GetVerticalalBucketMotorPower()
-//   {
-//      return VerticalBucketMotor.getPower();
-//   }
+   double GetExtensiontMotorPower() {return ExtensionMotor.getPower();}
 
+   //--------------------------------------------------------------------------
+   // NAME: GetAimMotorPower
+   // DESC: Access the horizontal bucket motor's power level.
+   //--------------------------------------------------------------------------
+   double GetAimMotorPower() {return AimMotor.getPower();}
 
    //--------------------------------------------------------------------------
    // NAME: SetDriveConfig
@@ -254,6 +253,21 @@ public class CF_Hardware extends OpMode
       if (DriveMotor2 != null)
       {
          DriveMotor2.setPower(powerMotor2);
+      }
+
+   }
+
+   public void SetWinchPower(double powerLevel1, double powerLevel2)
+   {
+      // Set motor power levels
+      if (ExtensionMotor != null)
+      {
+         ExtensionMotor.setPower(powerLevel1);
+      }
+
+      if (AimMotor != null)
+      {
+         AimMotor.setPower(powerLevel2);
       }
    }
 

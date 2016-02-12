@@ -17,6 +17,8 @@ public class CF_HardwareRed extends OpMode
    private DcMotor DriveMotor2;
    private Servo ZipLineServo;
    private Servo BucketServo;
+   public double BucketServoInitPosRed = 0.9;
+   public double ZiplineServoInitPosRed = 0.0;
    //   private String WarningMessageString;
    private boolean WarningGenerated = false;
 //   private DcMotor VerticalBucketMotor;
@@ -64,8 +66,8 @@ public class CF_HardwareRed extends OpMode
       DriveMotor1.setDirection(DcMotor.Direction.FORWARD);
       DriveMotor2.setDirection(DcMotor.Direction.REVERSE);
 
-      SetBucketServoPosition(0.9);
-      SetZipLineServoPosition(0.0);
+      SetBucketServoPosition(BucketServoInitPosRed);
+      SetZipLineServoPosition(ZiplineServoInitPosRed);
    }
 
 

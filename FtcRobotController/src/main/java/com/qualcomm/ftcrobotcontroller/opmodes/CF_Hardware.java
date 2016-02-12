@@ -5,6 +5,7 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.hardware.DcMotorController;
+import com.qualcomm.robotcore.hardware.TouchSensor;
 import com.qualcomm.robotcore.util.Range;
 
 
@@ -17,6 +18,9 @@ public class CF_Hardware extends OpMode
    private DcMotor DriveMotor2;
    private Servo ZipLineServo;
    private Servo BucketServo;
+   public TouchSensor TouchSensor1;
+   public double BucketServoInitPosBlue = 0.95;
+   public double ZiplineServoInitPosBlue = 0.4;
 //   private String WarningMessageString;
    private boolean WarningGenerated = false;
 //   private DcMotor VerticalBucketMotor;
@@ -56,6 +60,7 @@ public class CF_Hardware extends OpMode
       DriveMotor2 = hardwareMap.dcMotor.get("DriveMotor2");
       ZipLineServo = hardwareMap.servo.get("ZipLineServo");
       BucketServo = hardwareMap.servo.get("BucketServo");
+      TouchSensor1 = hardwareMap.touchSensor.get("TouchSensor1");
 
 //      HorizontalBucketMotor = hardwareMap.dcMotor.get("HorizontalBucketMotor");
 //      VerticalBucketMotor = hardwareMap.dcMotor.get("VerticalBucketMotor");
@@ -64,8 +69,8 @@ public class CF_Hardware extends OpMode
       DriveMotor1.setDirection(DcMotor.Direction.FORWARD);
       DriveMotor2.setDirection(DcMotor.Direction.REVERSE);
 
-      SetBucketServoPosition(0.95);
-      SetZipLineServoPosition(0.4);
+      SetBucketServoPosition(BucketServoInitPos);
+      SetZipLineServoPosition(ZiplineServoInitPos);
    }
 
 

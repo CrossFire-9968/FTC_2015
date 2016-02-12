@@ -66,8 +66,13 @@ public class CF_HardwareRed extends OpMode
       DriveMotor1.setDirection(DcMotor.Direction.FORWARD);
       DriveMotor2.setDirection(DcMotor.Direction.REVERSE);
 
+<<<<<<< HEAD
       SetBucketServoPosition(BucketServoInitPosRed);
       SetZipLineServoPosition(ZiplineServoInitPosRed);
+=======
+      SetBucketServoPosition(0.80);
+      SetZipLineServoPosition(0.50);
+>>>>>>> origin/Autonomous_Branch
    }
 
 

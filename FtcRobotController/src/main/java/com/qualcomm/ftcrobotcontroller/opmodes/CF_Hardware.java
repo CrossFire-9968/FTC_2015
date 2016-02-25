@@ -15,7 +15,8 @@ public class CF_Hardware extends OpMode
 {
    private DcMotor DriveMotor1;
    private DcMotor DriveMotor2;
-   private Servo ZipLineServo;
+   private Servo SpongeBobLeft;
+   private Servo SpongeBobRight;
    private Servo BucketServo;
    private DcMotor ExtensionMotor;
    private DcMotor AimMotor;
@@ -57,10 +58,12 @@ public class CF_Hardware extends OpMode
       // the FTC Robot Controller (Settings-->Configure Robot).
       DriveMotor1 = hardwareMap.dcMotor.get("DriveMotor1");
       DriveMotor2 = hardwareMap.dcMotor.get("DriveMotor2");
-      ZipLineServo = hardwareMap.servo.get("ZipLineServo");
+      SpongeBobLeft = hardwareMap.servo.get("SpongeBobLeft");
+      SpongeBobRight = hardwareMap.servo.get("SpongeBobRight");
       BucketServo = hardwareMap.servo.get("BucketServo");
       ExtensionMotor = hardwareMap.dcMotor.get("ExtensionMotor");
       AimMotor = hardwareMap.dcMotor.get("AimMotor");
+
 
 //      HorizontalBucketMotor = hardwareMap.dcMotor.get("HorizontalBucketMotor");
 //      VerticalBucketMotor = hardwareMap.dcMotor.get("VerticalBucketMotor");
@@ -68,10 +71,11 @@ public class CF_Hardware extends OpMode
       // Reverse right side motors so left and right motors spin same direction on robot
       DriveMotor1.setDirection(DcMotor.Direction.FORWARD);
       DriveMotor2.setDirection(DcMotor.Direction.REVERSE);
-      ExtensionMotor.setDirection(DcMotor.Direction.REVERSE);
+      AimMotor.setDirection(DcMotor.Direction.REVERSE);
 
       SetBucketServoPosition(0.80);
-      SetZipLineServoPosition(0.05);
+      SetSpongeBobRightPosition(0.05);
+      SetSpongeBobLeftPosition(0.05);
    }
 
 
@@ -133,6 +137,8 @@ public class CF_Hardware extends OpMode
       double[] powerArray = {0.00, 0.05, 0.09, 0.10, 0.12, 0.15, 0.18, 0.24, 0.30,
          0.36, 0.43, 0.50, 0.60, 0.72, 0.85, 1.00, 1.00};
 
+
+
       // Get the corresponding index for the specified argument/parameter.
       int index = (int) (clippedPower * numPointsInMap);
 
@@ -160,6 +166,47 @@ public class CF_Hardware extends OpMode
 
       return scaledPower;
    }
+
+   public double ScaleWinchMotorPower(double powerInput)
+   {
+      double scaledPower;
+      final int numPointsInMap = 16;
+
+      // Ensure the values make sense.  Clip the values to max/min values
+      double clippedPower = Range.clip(powerInput, -1, 1);
+
+      // Array used to map joystick input to motor output
+      double[] powerArray = {0, 0.01, 0.02, 0.04, 0.05, 0.08, 0.11,
+         0.13, 0.17, 0.23, 0.32, 0.4, 0.48, 0.61, 0.73, 0.89, 1};
+
+      // Get the corresponding index for the specified argument/parameter.
+      int index = (int) (clippedPower * numPointsInMap);
+
+      // Array indexes can only be positive so we need to drop the negative
+      if (index < 0)
+      {
+         index = -index;
+      }
+
+      // Limit indexes to actual size of array so we don't overflow
+      if (index > numPointsInMap)
+      {
+         index = numPointsInMap;
+      }
+
+      // Handle negative power values as the table only had positive values
+      if (clippedPower < 0)
+      {
+         scaledPower = -powerArray[index];
+      }
+      else
+      {
+         scaledPower = powerArray[index];
+      }
+
+      return scaledPower;
+   }
+
 
 
    //--------------------------------------------------------------------------
@@ -289,46 +336,86 @@ public class CF_Hardware extends OpMode
 //   }
 
    //--------------------------------------------------------------------------
-   // NAME: SetZipLineServoPosition
+   // NAME: SetSpongeBobLeftPosition
    // DESC: Scale the joystick input using a nonlinear algorithm.
    //--------------------------------------------------------------------------
-   public void SetZipLineServoPosition(double servoPositionDesired)
+   public void SetSpongeBobLeftPosition(double servoPositionDesired)
    {
       // Ensure the specific value is legal.
       double servoPositionActual = Range.clip(servoPositionDesired, 0, 1);
 
       // Set servo power levels
-      if (ZipLineServo != null)
+      if (SpongeBobLeft != null)
       {
          try
          {
-            ZipLineServo.setPosition(servoPositionActual);
-            telemetry.addData("02", "servoPositionActual: " + servoPositionDesired);
+            SpongeBobLeft.setPosition(servoPositionActual);
+            telemetry.addData("02", "SpongeBobLeft: " + servoPositionActual);
          }
 
          catch (Exception p_exeception)
          {
 //            WarningMessage("ZipLineServo");
             DbgLog.msg(p_exeception.getLocalizedMessage());
-            ZipLineServo = null;
+            SpongeBobLeft = null;
          }
       }
    }
 
    //--------------------------------------------------------------------------
-   // NAME: GetZipLineServoPosition
+   // NAME: SetSpongeBoRightPosition
+   // DESC: Scale the joystick input using a nonlinear algorithm.
+   //--------------------------------------------------------------------------
+   public void SetSpongeBobRightPosition(double servoPositionDesired)
+   {
+      // Ensure the specific value is legal.
+      double servoPositionActual = Range.clip(servoPositionDesired, 0, 1);
+
+      // Set servo power levels
+      if (SpongeBobRight != null)
+      {
+         try
+         {
+            SpongeBobRight.setPosition(servoPositionActual);
+            telemetry.addData("03", "SpongeBobRight: " + servoPositionActual);
+         }
+
+         catch (Exception p_exeception)
+         {
+//            WarningMessage("ZipLineServo");
+            DbgLog.msg(p_exeception.getLocalizedMessage());
+            SpongeBobRight = null;
+         }
+      }
+   }
+
+   //--------------------------------------------------------------------------
+   // NAME: GetSpongeBobLeftPosition
    // DESC:
    //--------------------------------------------------------------------------
-   public double GetZipLineServoPosition()
+   public double GetSpongeBobLeftPosition()
    {
       double position = 0.0;
 
-      if (ZipLineServo != null)
+      if (SpongeBobLeft != null)
       {
-         position = ZipLineServo.getPosition();
+         position = SpongeBobLeft.getPosition();
       }
+      return position;
+   }
 
-      telemetry.addData("03", "position: " + position);
+   //--------------------------------------------------------------------------
+   // NAME: GetSpongeBobRightPosition
+   // DESC:
+   //--------------------------------------------------------------------------
+   public double GetSpongeBobRightPosition()
+   {
+      double position = 0.0;
+
+      if (SpongeBobRight != null)
+      {
+         position = SpongeBobRight.getPosition();
+      }
       return position;
    }
 
@@ -347,7 +434,6 @@ public class CF_Hardware extends OpMode
          try
          {
             BucketServo.setPosition(servoPositionActual);
-            telemetry.addData("02", "servoPositionActual: " + servoPositionDesired);
          }
 
          catch (Exception p_exeception)
@@ -371,26 +457,8 @@ public class CF_Hardware extends OpMode
       {
          position = BucketServo.getPosition();
       }
-
-      telemetry.addData("03", "position: " + position);
       return position;
    }
-
-   //--------------------------------------------------------------------------
-   // NAME: WarningMessage
-   // DESC:
-   //--------------------------------------------------------------------------
-//   public void WarningMessage(String exceptionMessage)
-//   {
-//      if (WarningGenerated)
-//      {
-//         WarningMessageString += ", ";
-//      }
-//      WarningGenerated = true;
-//      WarningMessageString += exceptionMessage;
-//
-//   } // m_warning_message
-
 
    //------------------------------------------------------------
    //------------------------------------------------------------

@@ -44,6 +44,8 @@ public class CF_TracksManualRed extends CF_HardwareRed
    {
       float powerLevelDrive1;
       float powerLevelDrive2;
+      float powerLevelWinchE;
+      float powerLevelWinchA;
       float Gp1_LeftStickY = gamepad1.left_stick_y;
       float Gp1_RightStickY = gamepad1.right_stick_y;
       boolean Gp1_DPadUp = gamepad1.dpad_up;
@@ -51,6 +53,8 @@ public class CF_TracksManualRed extends CF_HardwareRed
       boolean Gp1_DPadLeft = gamepad1.dpad_left;
       boolean Gp1_DPadRight = gamepad1.dpad_right;
       float Gp2_LeftStickY = gamepad2.left_stick_y;
+      float Gp2_RightStickY = gamepad2.right_stick_y;
+
 //      float Gp2_RightStickX = gamepad2.right_stick_x;
 
       // Change power multiplier based on D-Pad selection
@@ -87,6 +91,12 @@ public class CF_TracksManualRed extends CF_HardwareRed
       // forward. DC motors are scaled to make it easier to control at slower speeds
       powerLevelDrive1 = (float)ScaleDriveMotorPower(Gp1_LeftStickY) * PowerGain;
       powerLevelDrive2 = (float)ScaleDriveMotorPower(Gp1_RightStickY) * PowerGain;
+      powerLevelWinchE = (float)ScaleDriveMotorPower(Gp2_RightStickY);
+      powerLevelWinchA = (float)ScaleDriveMotorPower(Gp2_LeftStickY) * 0.3f;
+
+      // Turn motors on
+      SetDriveMotorPower(powerLevelDrive1, powerLevelDrive2);
+      SetWinchPower(powerLevelWinchE, powerLevelWinchA);
 
       // Turn motors on
       SetDriveMotorPower(powerLevelDrive1, powerLevelDrive2);

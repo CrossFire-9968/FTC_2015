@@ -6,6 +6,7 @@ package com.qualcomm.ftcrobotcontroller.opmodes;
 public class CF_TracksManual extends CF_Hardware
 {
    private float PowerGain = 0;
+   public int spongeBobState = -1;
 
    //--------------------------------------------------------------------------
    // NAME: FuzzyBotManual4x4
@@ -54,6 +55,8 @@ public class CF_TracksManual extends CF_Hardware
       boolean Gp1_DPadRight = gamepad1.dpad_right;
       float Gp2_LeftStickY = gamepad2.left_stick_y;
       float Gp2_RightStickY = gamepad2.right_stick_y;
+      boolean Gp2_X = gamepad2.x;
+      boolean Gp_B = gamepad2.b;
 
 //      float Gp2_RightStickX = gamepad2.right_stick_x;
 
@@ -74,7 +77,16 @@ public class CF_TracksManual extends CF_Hardware
       {
          PowerGain = 0.30f;
       }
-
+      if (gamepad2.x)
+      {
+         // 0 = blue mountain
+         spongeBobState = 0;
+      }
+      if (gamepad2.y)
+      {
+         // 1 = red mountain
+         spongeBobState = 1;
+      }
       // Used to change driving direction
       if (gamepad1.a)
       {
@@ -91,22 +103,14 @@ public class CF_TracksManual extends CF_Hardware
       // forward. DC motors are scaled to make it easier to control at slower speeds
       powerLevelDrive1 = (float)ScaleDriveMotorPower(Gp1_LeftStickY) * PowerGain;
       powerLevelDrive2 = (float)ScaleDriveMotorPower(Gp1_RightStickY) * PowerGain;
-      powerLevelWinchE = (float)ScaleDriveMotorPower(Gp2_RightStickY);
-      powerLevelWinchA = (float)ScaleDriveMotorPower(Gp2_LeftStickY) * 0.3f;
+      powerLevelWinchE = (float)ScaleWinchMotorPower(Gp2_RightStickY);
+      powerLevelWinchA = (float)ScaleWinchMotorPower(Gp2_LeftStickY) * 0.3f;
 
       // Turn motors on
       SetDriveMotorPower(powerLevelDrive1, powerLevelDrive2);
       SetWinchPower(powerLevelWinchE, powerLevelWinchA);
 //      SetBucketMotorPower(VerticalBucketMotorPower, HorizontalBucketMotorPower);
    }
-
-//   private void bucketMotorControl()
-//   {
-//      float Gp1_LeftStickY = gamepad1.left_stick_y;
-//      float Gp1_RightStickX = gamepad1.right_stick_x;
-//      float VerticalBucketMotorPower = (float) ScaleDriveMotorPower(Gp2_LeftStickY);
-//      float HorizontalBucketMotorPower = (float) ScaleDriveMotorPower(Gp2_RightStickX);
-//   }
 
    //--------------------------------------------------------------------------
    // NAME: ZipLineServo
@@ -117,13 +121,27 @@ public class CF_TracksManual extends CF_Hardware
       // Servo Motors Obtain the current values of the game pad 'RightBumper' and 'LeftBumper' buttons.
       // The clip method guarantees the value never exceeds the allowable
       // range.
-      if (gamepad2.right_bumper)
+      if(spongeBobState == 0)
       {
-         SetZipLineServoPosition(GetZipLineServoPosition() + 0.005);
+         if (gamepad2.right_bumper)
+         {
+            SetSpongeBobLeftPosition(GetSpongeBobLeftPosition() + 0.005);
+         }
+         else if (gamepad2.left_bumper)
+         {
+            SetSpongeBobLeftPosition(GetSpongeBobLeftPosition() - 0.005);
+         }
       }
-      else if (gamepad2.left_bumper)
+      else if(spongeBobState == 1)
       {
-         SetZipLineServoPosition(GetZipLineServoPosition() - 0.005);
+         if (gamepad2.right_bumper)
+         {
+            SetSpongeBobRightPosition(GetSpongeBobRightPosition() - 0.005);
+         }
+         else if (gamepad2.left_bumper)
+         {
+            SetSpongeBobRightPosition(GetSpongeBobRightPosition() + 0.005);
+         }
       }
 
       if (gamepad2.dpad_down)
@@ -134,6 +152,8 @@ public class CF_TracksManual extends CF_Hardware
       {
          SetBucketServoPosition(GetBucketServoPosition() - 0.002);
       }
+
+
    }
 
 
@@ -143,20 +163,14 @@ public class CF_TracksManual extends CF_Hardware
    //--------------------------------------------------------------------------
    public void UpdateTelemetry()
    {
-      // Send telemetry data to the driver station.
-      telemetry.addData("01", "version: v" + 0.6);
-//      telemetry.addData("01", "Left Track Power: " + GetDrivePowerMotor1());
-//      telemetry.addData("02", "Right Track Power: " + GetDriveMotorPower2());
-//      telemetry.addData("03", "PowerGain: " + PowerGain);
-      telemetry.addData("04", "ZipLineServo: " + GetZipLineServoPosition());
       switch (DriveConfig)
       {
          case MOUNTAIN:
-            telemetry.addData("05", "Drive Mode: MOUNTAIN");
+            telemetry.addData("01", "Drive Mode: MOUNTAIN");
             break;
 
          case DOZER:
-            telemetry.addData("05", "Drive Mode: DOZER");
+            telemetry.addData("01", "Drive Mode: DOZER");
             break;
       }
    }

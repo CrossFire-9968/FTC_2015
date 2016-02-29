@@ -82,7 +82,7 @@ public class CF_TracksManual extends CF_Hardware
          // 0 = blue mountain
          spongeBobState = 0;
       }
-      if (gamepad2.y)
+      if (gamepad2.b)
       {
          // 1 = red mountain
          spongeBobState = 1;
@@ -136,11 +136,11 @@ public class CF_TracksManual extends CF_Hardware
       {
          if (gamepad2.right_bumper)
          {
-            SetSpongeBobRightPosition(GetSpongeBobRightPosition() - 0.005);
+            SetSpongeBobRightPosition(GetSpongeBobRightPosition() + 0.005);
          }
          else if (gamepad2.left_bumper)
          {
-            SetSpongeBobRightPosition(GetSpongeBobRightPosition() + 0.005);
+            SetSpongeBobRightPosition(GetSpongeBobRightPosition() - 0.005);
          }
       }
 
@@ -173,6 +173,8 @@ public class CF_TracksManual extends CF_Hardware
             telemetry.addData("01", "Drive Mode: DOZER");
             break;
       }
+
+
    }
 }
 

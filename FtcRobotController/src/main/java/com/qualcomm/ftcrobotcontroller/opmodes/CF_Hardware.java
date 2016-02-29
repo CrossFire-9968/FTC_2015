@@ -72,6 +72,7 @@ public class CF_Hardware extends OpMode
       DriveMotor1.setDirection(DcMotor.Direction.FORWARD);
       DriveMotor2.setDirection(DcMotor.Direction.REVERSE);
       AimMotor.setDirection(DcMotor.Direction.REVERSE);
+      ExtensionMotor.setDirection(DcMotor.Direction.REVERSE);
 
       SetBucketServoPosition(0.80);
       SetSpongeBobRightPosition(0.05);
@@ -557,9 +558,8 @@ public class CF_Hardware extends OpMode
    // run_using_encoders
    //
 
-   /**
-    * Set both drive wheel encoders to run, if the mode is appropriate.
-    */
+   /* Set both drive wheel encoders to run, if the mode is appropriate.
+   */
    public void run_using_encoders()
 
    {
@@ -572,6 +572,7 @@ public class CF_Hardware extends OpMode
    } // run_using_encoders
 
    //--------------------------------------------------------------------------
+   /**
    //
    // run_without_left_drive_encoder
    //

@@ -398,8 +398,6 @@ public class CF_AutoBlueMtn extends CF_Hardware
         telemetry.addData("21", "Left Drive Power: " + GetDriveMotorPower1());
 
         telemetry.addData("22", "Right Drive Power: " + GetDriveMotorPower2());
-
-        telemetry.addData("23", "Bucket Servo Pos:" + GetBucketServoPosition());
     } // loop
 
     //--------------------------------------------------------------------------

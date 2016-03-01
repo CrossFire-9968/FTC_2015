@@ -1,5 +1,7 @@
 package com.qualcomm.ftcrobotcontroller.opmodes;
 
+import com.qualcomm.robotcore.hardware.DcMotor;
+
 /**
  * Created by Lauren_FTC on 10/18/2015.
  */
@@ -46,19 +48,24 @@ public class CF_TracksManual extends CF_Hardware
       float powerLevelDrive1;
       float powerLevelDrive2;
       float powerLevelWinchE;
+      float powerLevelHook;
       float powerLevelWinchA;
+      float powerLevelConveyor;
       float Gp1_LeftStickY = gamepad1.left_stick_y;
       float Gp1_RightStickY = gamepad1.right_stick_y;
       boolean Gp1_DPadUp = gamepad1.dpad_up;
       boolean Gp1_DPadDown = gamepad1.dpad_down;
+      float Gp1_RightTrigger = gamepad1.right_trigger;
+      float Gp1_LeftTrigger = gamepad1.left_trigger;
       boolean Gp1_DPadLeft = gamepad1.dpad_left;
       boolean Gp1_DPadRight = gamepad1.dpad_right;
       float Gp2_LeftStickY = gamepad2.left_stick_y;
       float Gp2_RightStickY = gamepad2.right_stick_y;
       boolean Gp2_X = gamepad2.x;
-      boolean Gp_B = gamepad2.b;
+      boolean Gp2_B = gamepad2.b;
+      boolean Gp2_DPadUp = gamepad2.dpad_up;
+      boolean Gp2_DPadDown = gamepad2.dpad_down;
 
-//      float Gp2_RightStickX = gamepad2.right_stick_x;
 
       // Change power multiplier based on D-Pad selection
       if (Gp1_DPadUp)
@@ -77,12 +84,12 @@ public class CF_TracksManual extends CF_Hardware
       {
          PowerGain = 0.30f;
       }
-      if (gamepad2.x)
+      if (Gp2_B)
       {
          // 0 = blue mountain
          spongeBobState = 0;
       }
-      if (gamepad2.b)
+      if (Gp2_X)
       {
          // 1 = red mountain
          spongeBobState = 1;
@@ -104,12 +111,42 @@ public class CF_TracksManual extends CF_Hardware
       powerLevelDrive1 = (float)ScaleDriveMotorPower(Gp1_LeftStickY) * PowerGain;
       powerLevelDrive2 = (float)ScaleDriveMotorPower(Gp1_RightStickY) * PowerGain;
       powerLevelWinchE = (float)ScaleWinchMotorPower(Gp2_RightStickY);
-      powerLevelWinchA = (float)ScaleWinchMotorPower(Gp2_LeftStickY) * 0.3f;
+      powerLevelWinchA = (float)ScaleWinchMotorPower(Gp2_LeftStickY) * 0.15f;
+
+      if (Gp1_RightTrigger > 0)
+      {
+         powerLevelConveyor = (float)ScaleDriveMotorPower(Gp1_RightTrigger);
+      }
+      else if (Gp1_LeftTrigger > 0)
+      {
+         powerLevelConveyor = (float)ScaleDriveMotorPower(Gp1_RightTrigger) * (-1);
+      }
+      else
+      {
+         powerLevelConveyor = 0;
+      }
+
+
+
+      if (Gp2_DPadUp)
+      {
+         powerLevelHook = 0.2f;
+      }
+      else if (Gp2_DPadDown)
+      {
+         powerLevelHook = -0.2f;
+      }
+      else
+      {
+         powerLevelHook = 0f;
+      }
+
 
       // Turn motors on
       SetDriveMotorPower(powerLevelDrive1, powerLevelDrive2);
       SetWinchPower(powerLevelWinchE, powerLevelWinchA);
-//      SetBucketMotorPower(VerticalBucketMotorPower, HorizontalBucketMotorPower);
+      SetConveyorPower(powerLevelConveyor);
+      SetHookPower(powerLevelHook);
    }
 
    //--------------------------------------------------------------------------
@@ -143,17 +180,6 @@ public class CF_TracksManual extends CF_Hardware
             SetSpongeBobRightPosition(GetSpongeBobRightPosition() - 0.005);
          }
       }
-
-      if (gamepad2.dpad_down)
-      {
-         SetBucketServoPosition(GetBucketServoPosition() + 0.005);
-      }
-      else if (gamepad2.dpad_up)
-      {
-         SetBucketServoPosition(GetBucketServoPosition() - 0.002);
-      }
-
-
    }
 
 

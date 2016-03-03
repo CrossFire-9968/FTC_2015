@@ -51,6 +51,7 @@ public class CF_TracksManual extends CF_Hardware
       float powerLevelHook;
       float powerLevelWinchA;
       float powerLevelConveyor;
+      float powerLevelBallDropper;
       float Gp1_LeftStickY = gamepad1.left_stick_y;
       float Gp1_RightStickY = gamepad1.right_stick_y;
       boolean Gp1_DPadUp = gamepad1.dpad_up;

@@ -4,6 +4,9 @@ package com.qualcomm.ftcrobotcontroller.opmodes;
 //
 // PushBotAuto
 //
+
+import com.qualcomm.robotcore.hardware.DcMotorController;
+
 /**
  * Provide a basic autonomous operational mode that uses the left and right
  * drive motors and associated encoders implemented using a state machine for
@@ -77,152 +80,6 @@ public class CF_AutoBlueMtn extends CF_Hardware
     @Override public void loop ()
 
     {
-        //----------------------------------------------------------------------
-        //
-        // State: Initialize (i.e. state_0).
-        //
-//        switch (v_state)
-//        {
-//            //
-//            // Synchronize the state machine and hardware.
-//            //
-//            case 0:
-//                //
-//                // Reset the encoders to ensure they are at a known good value.
-//                //
-//                reset_drive_encoders ();
-//
-//                //
-//                // Transition to the next state when this method is called again.
-//                //
-//                v_state++;
-//
-//                break;
-//            //
-//            // Drive forward until the encoders exceed the specified values.
-//            //
-//            case 1:
-//                //
-//                // Tell the system that motor encoders will be used.  This call MUST
-//                // be in this state and NOT the previous or the encoders will not
-//                // work.  It doesn't need to be in subsequent states.
-//                //
-//                run_using_encoders ();
-//
-//                //
-//                // Start the drive wheel motors at full power.
-//                //
-//                set_drive_power (0.25f, 0.25f);
-//
-//                // Have the motor shafts turned the required amount?
-//                //
-//                // If they haven't, then the op-mode remains in this state (i.e this
-//                // block will be executed the next time this method is called).
-//                //5000 revs = 31 in
-//
-//                if (have_drive_encoders_reached (12709, 12709))
-//                {
-//                    //
-//                    // Reset the encoders to ensure they are at a known good value.
-//                    //
-//                    reset_drive_encoders ();
-//
-//                    //
-//                    // Stop the motors.
-//                    //
-//                    set_drive_power (0.0f, 0.0f);
-//
-//                    //
-//                    // Transition to the next state when this method is called
-//                    // again.
-//                    //
-//                    v_state++;
-//                }
-//                break;
-//            //
-//            // Wait...
-//            //
-//            case 2:
-//                if (have_drive_encoders_reset())
-//                {
-//                    v_state++;
-//                }
-//                break;
-//            case 3:
-//                run_using_encoders();
-//                set_drive_power(-0.25f, 0.25f);
-//
-//                if(have_drive_encoders_reached(-2700, 2700)){
-//                    reset_drive_encoders();
-//                    set_drive_power(0.0f, 0.0f);
-//                    v_state++;
-//
-//                }
-//
-//                break;
-//
-//            case 4:
-//                if(have_drive_encoders_reset())
-//                {
-//                    v_state++;
-//                }
-//                break;
-//            case 5:
-//                run_using_encoders();
-//                set_drive_power(0.25f, 0.25f);
-//
-//                if(have_drive_encoders_reached(9838, 9838)) {
-//                    reset_drive_encoders();
-//
-//                    set_drive_power(0.0f, 0.0f);
-//                    v_state++;
-//                }
-//
-//                break;
-////
-////            case 6:
-////                if(have_drive_encoders_reset())
-////                 {
-////                    v_state++;
-////                 }
-////                 break;
-////            case 7:
-////                reset_drive_encoders();
-////                run_using_encoders();
-////                set_drive_power(0.25f, -0.25f);
-////
-////                if(have_drive_encoders_reached(1000, -1000)){
-////                    //reset_drive_encoders();
-////                    set_drive_power(0.0f, 0.0f);
-////                    v_state++;
-////                }
-////                break;
-////            case 8:
-////                if (have_drive_encoders_reset()){
-////                    v_state++;
-////                }
-////                break;
-////            case 9:
-////                run_using_encoders();
-////                set_drive_power(1.0f, 1.0f);
-////
-////                if(have_drive_encoders_reached(4354, 4354)){
-////                    reset_drive_encoders();
-////                    set_drive_power(0.0f, 0.0f);
-////                    v_state++;
-////                }
-////
-////
-////                break;
-//
-//            default:
-//                //
-//                // The autonomous actions have been accomplished (i.e. the state has
-//                // transitioned into its final state.
-//                //
-//                //v_state = 20;
-//                break;
-//        }
         switch (v_state)
         {
             //
@@ -262,7 +119,7 @@ public class CF_AutoBlueMtn extends CF_Hardware
                 // block will be executed the next time this method is called).
                 //5000 revs = 31 in
 
-                if (have_drive_encoders_reached (13387, 13387))
+                if (have_drive_encoders_reached (1774, 483))
                 {
                     //
                     // Reset the encoders to ensure they are at a known good value.
@@ -292,9 +149,9 @@ public class CF_AutoBlueMtn extends CF_Hardware
                 break;
             case 3:
                 run_using_encoders();
-                set_drive_power(-0.25f, 0.25f);
+                set_drive_power(0.25f, 0.25f);
 
-                if(have_drive_encoders_reached(-1850, 1850)){
+                if(have_drive_encoders_reached(12799, 12799)){
                     reset_drive_encoders();
                     set_drive_power(0.0f, 0.0f);
                     v_state++;
@@ -311,9 +168,9 @@ public class CF_AutoBlueMtn extends CF_Hardware
                 break;
             case 5:
                 run_using_encoders();
-                set_drive_power(0.50f, 0.50f);
+                set_drive_power(0.50f, 0.0f);
 
-                if(have_drive_encoders_reached(11612, 11612)) {
+                if(have_drive_encoders_reached(1288, 0)){
                     reset_drive_encoders();
 
                     set_drive_power(0.0f, 0.0f);
@@ -321,51 +178,84 @@ public class CF_AutoBlueMtn extends CF_Hardware
                 }
 
                 break;
-//            case 6:
-//                SetBucketServoPosition(0.15);
-//                SetBucketServoPosition(0.30);
-//                SetBucketServoPosition(0.45);
-//                SetBucketServoPosition(0.60);
-//                break;
-            case 7:
-                //SetBucketServoPosition(GetBucketServoPosition() + 0.005);
+            case 6:
+                if(have_drive_encoders_reset()) {
+                    v_state++;
+                }
                 break;
 
-//
-//            case 6:
-//                if(have_drive_encoders_reset())
-//                 {
-//                    v_state++;
-//                 }
-//                 break;
-//            case 7:
-//                reset_drive_encoders();
-//                run_using_encoders();
-//                set_drive_power(0.25f, -0.25f);
-//
-//                if(have_drive_encoders_reached(1000, -1000)){
-//                    //reset_drive_encoders();
-//                    set_drive_power(0.0f, 0.0f);
-//                    v_state++;
-//                }
-//                break;
-//            case 8:
-//                if (have_drive_encoders_reset()){
-//                    v_state++;
-//                }
-//                break;
-//            case 9:
-//                run_using_encoders();
-//                set_drive_power(1.0f, 1.0f);
-//
-//                if(have_drive_encoders_reached(4354, 4354)){
-//                    reset_drive_encoders();
-//                    set_drive_power(0.0f, 0.0f);
-//                    v_state++;
-//                }
-//
-//
-//                break;
+            case 7:
+                run_using_encoders();
+                set_drive_power(0.25f, 0.25f);
+
+                if(have_drive_encoders_reached(1288, 1288)) {
+                    reset_drive_encoders();
+
+                    set_drive_power(0.0f, 0.0f);
+                    v_state++;
+                }
+                break;
+            case 8:
+                if(have_drive_encoders_reset()) {
+                    v_state++;
+                }
+                break;
+            case 9:
+                run_using_encoders();
+                set_drive_power(-0.25f, 0.25f);
+
+                if(have_drive_encoders_reached(-2000, 2000)) {
+                    reset_drive_encoders();
+                    set_drive_power(0.0f, 0.0f);
+                    v_state++;
+                }
+                break;
+            case 10:
+                if(have_drive_encoders_reset()) {
+                    v_state++;
+                }
+                break;
+            case 11:
+                run_using_encoders();
+                set_drive_power(0.25f, 0.25f);
+
+                if(have_drive_encoders_reached(644, 644))
+                {
+                    reset_drive_encoders();
+                    set_drive_power(0.0f, 0.0f);
+                    v_state++;
+                }
+                break;
+            case 12:
+                if(have_drive_encoders_reset()) {
+                    v_state++;
+                }
+                break;
+            case 13:
+                if (AimMotor != null)
+                {
+                    AimMotor.setChannelMode
+                            (
+                                    DcMotorController.RunMode.RESET_ENCODERS
+                            );
+                }
+                if (AimMotor != null)
+                {
+                    AimMotor.setChannelMode
+                            (
+                                    DcMotorController.RunMode.RUN_USING_ENCODERS
+                            );
+                }
+                AimMotor.setPower(0.25f);
+                if (Math.abs(AimMotor.getCurrentPosition()) > 1091)
+                {
+                    AimMotor.setPower(0.00f);
+                }
+                AimMotor.setChannelMode
+                        (
+                                DcMotorController.RunMode.RESET_ENCODERS
+                        );
+                break;
 
             default:
                 //

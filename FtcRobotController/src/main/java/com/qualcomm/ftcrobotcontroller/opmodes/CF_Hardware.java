@@ -18,7 +18,7 @@ public class CF_Hardware extends OpMode
    private Servo SpongeBobLeft;
    private Servo SpongeBobRight;
    private DcMotor ExtensionMotor;
-   private DcMotor AimMotor;
+   public DcMotor AimMotor;
    private DcMotor ConveyorMotor;
    private DcMotor HookMotor;
 

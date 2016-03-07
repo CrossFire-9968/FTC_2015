@@ -9,6 +9,10 @@ public class CF_TracksManual extends CF_Hardware
 {
    private float PowerGain = 0;
    public int spongeBobState = -1;
+   private static final float RightSpongeServoUpperLimit = 0.8f;
+   private static final float RightSpongeServoLowerLimit = 0;
+   private static final float LeftSpongeServoUpperLimit = 1.0f;
+   private static final float LeftSpongeServoLowerLimit = 0;
 
    //--------------------------------------------------------------------------
    // NAME: FuzzyBotManual4x4
@@ -56,16 +60,14 @@ public class CF_TracksManual extends CF_Hardware
       float Gp1_RightStickY = gamepad1.right_stick_y;
       boolean Gp1_DPadUp = gamepad1.dpad_up;
       boolean Gp1_DPadDown = gamepad1.dpad_down;
+      float Gp2_RightStickY = gamepad2.right_stick_y;
+      boolean Gp2_DPadUp = gamepad2.dpad_up;
+      boolean Gp2_DPadDown = gamepad2.dpad_down;
       float Gp1_RightTrigger = gamepad1.right_trigger;
       float Gp1_LeftTrigger = gamepad1.left_trigger;
       boolean Gp1_DPadLeft = gamepad1.dpad_left;
       boolean Gp1_DPadRight = gamepad1.dpad_right;
       float Gp2_LeftStickY = gamepad2.left_stick_y;
-      float Gp2_RightStickY = gamepad2.right_stick_y;
-      boolean Gp2_X = gamepad2.x;
-      boolean Gp2_B = gamepad2.b;
-      boolean Gp2_DPadUp = gamepad2.dpad_up;
-      boolean Gp2_DPadDown = gamepad2.dpad_down;
 
 
       // Change power multiplier based on D-Pad selection
@@ -85,16 +87,7 @@ public class CF_TracksManual extends CF_Hardware
       {
          PowerGain = 0.30f;
       }
-      if (Gp2_B)
-      {
-         // 0 = blue mountain
-         spongeBobState = 0;
-      }
-      if (Gp2_X)
-      {
-         // 1 = red mountain
-         spongeBobState = 1;
-      }
+
       // Used to change driving direction
       if (gamepad1.a)
       {
@@ -112,42 +105,53 @@ public class CF_TracksManual extends CF_Hardware
       powerLevelDrive1 = (float)ScaleDriveMotorPower(Gp1_LeftStickY) * PowerGain;
       powerLevelDrive2 = (float)ScaleDriveMotorPower(Gp1_RightStickY) * PowerGain;
       powerLevelWinchE = (float)ScaleWinchMotorPower(Gp2_RightStickY);
-      powerLevelWinchA = (float)ScaleWinchMotorPower(Gp2_LeftStickY) * 0.15f;
 
-      if (Gp1_RightTrigger > 0)
+      if (Gp2_LeftStickY > 0)
       {
-         powerLevelConveyor = (float)ScaleDriveMotorPower(Gp1_RightTrigger);
+         powerLevelWinchA = (float)ScaleWinchMotorPower(Gp2_LeftStickY) * 0.20f;
       }
-      else if (Gp1_LeftTrigger > 0)
+      else if (Gp2_LeftStickY < 0)
       {
-         powerLevelConveyor = (float)ScaleDriveMotorPower(Gp1_RightTrigger) * (-1);
+         powerLevelWinchA = (float)ScaleWinchMotorPower(Gp2_LeftStickY) * 0.10f;
       }
       else
       {
-         powerLevelConveyor = 0;
+         powerLevelWinchA = 0;
       }
 
-
-
-      if (Gp2_DPadUp)
+      //if (Gp1_RightTrigger > 0)
       {
-         powerLevelHook = 0.2f;
+         //powerLevelConveyor = (float)ScaleDriveMotorPower(Gp1_LeftTrigger) * (0.5f);
       }
-      else if (Gp2_DPadDown)
+      //else if (Gp1_LeftTrigger > 0)
       {
-         powerLevelHook = -0.2f;
+         //powerLevelConveyor = (float)ScaleDriveMotorPower(Gp1_RightTrigger) * (-0.5f);
       }
-      else
+      //else
       {
-         powerLevelHook = 0f;
+         //powerLevelConveyor = 0;
       }
 
+
+      // Setting power levels for aiming the debris hook
+      //if (Gp2_DPadDown)
+      {
+         //powerLevelHook = 0.07f;
+      }
+      //else if (Gp2_DPadUp)
+      {
+         //powerLevelHook = -0.15f;
+      }
+      //else
+      {
+         //powerLevelHook = 0f;
+      }
 
       // Turn motors on
       SetDriveMotorPower(powerLevelDrive1, powerLevelDrive2);
       SetWinchPower(powerLevelWinchE, powerLevelWinchA);
-      SetConveyorPower(powerLevelConveyor);
-      SetHookPower(powerLevelHook);
+      //SetConveyorPower(powerLevelConveyor);
+      //SetHookPower(powerLevelHook);
    }
 
    //--------------------------------------------------------------------------
@@ -156,30 +160,85 @@ public class CF_TracksManual extends CF_Hardware
    //--------------------------------------------------------------------------
    private void ServiceServos()
    {
+      double SpongeLeftPosition = GetSpongeBobLeftPosition();
+      double SpongeRightPosition = GetSpongeBobRightPosition();
+      double BucketServoPosition = GetBucketServoPosition();
+
+      //double ClawServoPosition = GetClawServoPosition();
+
+      if (gamepad2.b)
+      {
+         // 0 = blue mountain
+         spongeBobState = 0;
+      }
+      else if (gamepad2.x)
+      {
+         // 1 = red mountain
+         spongeBobState = 1;
+      }
+
       // Servo Motors Obtain the current values of the game pad 'RightBumper' and 'LeftBumper' buttons.
       // The clip method guarantees the value never exceeds the allowable
       // range.
       if(spongeBobState == 0)
       {
-         if (gamepad2.right_bumper)
-         {
-            SetSpongeBobLeftPosition(GetSpongeBobLeftPosition() + 0.005);
-         }
-         else if (gamepad2.left_bumper)
-         {
-            SetSpongeBobLeftPosition(GetSpongeBobLeftPosition() - 0.005);
-         }
+            if (gamepad2.left_bumper)
+            {
+               if (SpongeLeftPosition > LeftSpongeServoLowerLimit)
+               {
+                  SetSpongeBobLeftPosition(SpongeLeftPosition - 0.005);
+               }
+            }
+            else if (gamepad2.right_bumper)
+            {
+               if (SpongeLeftPosition < LeftSpongeServoUpperLimit)
+               {
+                  SetSpongeBobLeftPosition(SpongeLeftPosition + 0.005);
+               }
+            }
       }
       else if(spongeBobState == 1)
       {
          if (gamepad2.right_bumper)
          {
-            SetSpongeBobRightPosition(GetSpongeBobRightPosition() + 0.005);
+            if (SpongeRightPosition < RightSpongeServoUpperLimit)
+            {
+               SetSpongeBobRightPosition(SpongeRightPosition + 0.005);
+            }
          }
          else if (gamepad2.left_bumper)
          {
-            SetSpongeBobRightPosition(GetSpongeBobRightPosition() - 0.005);
+            if (SpongeRightPosition > RightSpongeServoLowerLimit)
+            {
+               SetSpongeBobRightPosition(SpongeRightPosition - 0.005);
+            }
          }
+      }
+
+      if (gamepad2.dpad_up)
+      {
+         SetBucketServoPosition(BucketServoPosition - 0.003);
+      }
+      else if (gamepad2.dpad_down)
+      {
+         SetBucketServoPosition(BucketServoPosition + 0.005);
+      }
+
+      //if (gamepad2.y)
+      {
+         //SetClawServoPosition(ClawServoPosition + 0.005);
+      }
+      //else if (gamepad2.a)
+      {
+         //SetClawServoPosition(ClawServoPosition - 0.005);
+      }
+
+      //telemetry.addData("04", "ClawServo: " + ClawServoPosition);
+      //telemetry.addData("03", "SpongeBobRight: " + SpongeRightPosition);
+      //telemetry.addData("02", "SpongeBobLeft: " + SpongeLeftPosition);
+      //if (ClawServo == null)
+      {
+         //telemetry.addData("05", "ClawServo is Null");
       }
    }
 
@@ -200,7 +259,6 @@ public class CF_TracksManual extends CF_Hardware
             telemetry.addData("01", "Drive Mode: DOZER");
             break;
       }
-
 
    }
 }

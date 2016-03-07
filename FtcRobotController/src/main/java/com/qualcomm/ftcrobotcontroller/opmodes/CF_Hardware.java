@@ -5,6 +5,7 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.hardware.DcMotorController;
+import com.qualcomm.robotcore.hardware.TouchSensor;
 import com.qualcomm.robotcore.util.Range;
 
 
@@ -17,10 +18,13 @@ public class CF_Hardware extends OpMode
    private DcMotor DriveMotor2;
    private Servo SpongeBobLeft;
    private Servo SpongeBobRight;
+   // public Servo ClawServo;
    private DcMotor ExtensionMotor;
    public DcMotor AimMotor;
-   private DcMotor ConveyorMotor;
-   private DcMotor HookMotor;
+   private Servo BucketServo;
+   //public TouchSensor TouchSensor1;
+   //private DcMotor ConveyorMotor;
+   //private DcMotor HookMotor;
 
 //   private String WarningMessageString;
    private boolean WarningGenerated = false;
@@ -61,19 +65,25 @@ public class CF_Hardware extends OpMode
       SpongeBobRight = hardwareMap.servo.get("SpongeBobRight");
       ExtensionMotor = hardwareMap.dcMotor.get("ExtensionMotor");
       AimMotor = hardwareMap.dcMotor.get("AimMotor");
-      ConveyorMotor = hardwareMap.dcMotor.get("ConveyorMotor");
-      HookMotor = hardwareMap.dcMotor.get("HookMotor");
+      BucketServo = hardwareMap.servo.get("BucketServo");
+      //TouchSensor1 = hardwareMap.touchSensor.get ("TouchSensor1");
+
+      // ConveyorMotor = hardwareMap.dcMotor.get("ConveyorMotor");
+      //HookMotor = hardwareMap.dcMotor.get("HookMotor");
+      //ClawServo = hardwareMap.servo.get("ClawServo");
 
       // Reverse right side motors so left and right motors spin same direction on robot
       DriveMotor1.setDirection(DcMotor.Direction.FORWARD);
       DriveMotor2.setDirection(DcMotor.Direction.REVERSE);
       AimMotor.setDirection(DcMotor.Direction.REVERSE);
-      ExtensionMotor.setDirection(DcMotor.Direction.REVERSE);
-      ConveyorMotor.setDirection(DcMotor.Direction.FORWARD);
-      HookMotor.setDirection(DcMotor.Direction.FORWARD);
+      ExtensionMotor.setDirection(DcMotor.Direction.FORWARD);
+      //ConveyorMotor.setDirection(DcMotor.Direction.FORWARD);
+      //HookMotor.setDirection(DcMotor.Direction.FORWARD);
 
-      SetSpongeBobRightPosition(0.60);
-      SetSpongeBobLeftPosition(0.00);
+      SetSpongeBobRightPosition(0.65);
+      SetSpongeBobLeftPosition(0.13);
+      //SetClawServoPosition(1.00);
+      SetBucketServoPosition(0.82);
    }
 
 
@@ -230,16 +240,16 @@ public class CF_Hardware extends OpMode
    // NAME: GetDriveMotorPower2
    // DESC: Access the right track motor's power level.
    //--------------------------------------------------------------------------
-   public double GetConveyorMotorPower()
+   //public double GetConveyorMotorPower()
    {
-      return ConveyorMotor.getPower();
+     // return ConveyorMotor.getPower();
    }
 
    //--------------------------------------------------------------------------
    // NAME: GetHookMotorPower
    // DESC: Access the horizontal bucket motor's power level.
    //--------------------------------------------------------------------------
-   double GetHookPower() {return HookMotor.getPower();}
+   //double GetHookPower() {return HookMotor.getPower();}
 
    //--------------------------------------------------------------------------
    // NAME: GetAimMotorPower
@@ -260,14 +270,14 @@ public class CF_Hardware extends OpMode
       switch (DriveConfig)
       {
          case MOUNTAIN:
-            DriveMotor1.setDirection(DcMotor.Direction.FORWARD);
-            DriveMotor2.setDirection(DcMotor.Direction.REVERSE);
+            DriveMotor1.setDirection(DcMotor.Direction.REVERSE);
+            DriveMotor2.setDirection(DcMotor.Direction.FORWARD);
             break;
 
          case DOZER:
          default:
-            DriveMotor1.setDirection(DcMotor.Direction.REVERSE);
-            DriveMotor2.setDirection(DcMotor.Direction.FORWARD);
+            DriveMotor1.setDirection(DcMotor.Direction.FORWARD);
+            DriveMotor2.setDirection(DcMotor.Direction.REVERSE);
             break;
       }
    }
@@ -324,21 +334,21 @@ public class CF_Hardware extends OpMode
    }
 }
 
-   public void SetConveyorPower(double powerLevel1)
+   //public void SetConveyorPower(double powerLevel1)
 {
    // Set motor power levels
-   if (ConveyorMotor != null)
+   //if (ConveyorMotor != null)
    {
-      ConveyorMotor.setPower(powerLevel1);
+     // ConveyorMotor.setPower(powerLevel1);
    }
 }
 
-   public void SetHookPower(double powerLevel1)
+   //public void SetHookPower(double powerLevel1)
    {
       // Set motor power levels
-      if (HookMotor != null)
+      //if (HookMotor != null)
       {
-         HookMotor.setPower(powerLevel1);
+         //HookMotor.setPower(powerLevel1);
       }
    }
 
@@ -357,7 +367,6 @@ public class CF_Hardware extends OpMode
          try
          {
             SpongeBobLeft.setPosition(servoPositionActual);
-            telemetry.addData("02", "SpongeBobLeft: " + servoPositionActual);
          }
 
          catch (Exception p_exeception)
@@ -384,7 +393,6 @@ public class CF_Hardware extends OpMode
          try
          {
             SpongeBobRight.setPosition(servoPositionActual);
-            telemetry.addData("03", "SpongeBobRight: " + servoPositionActual);
          }
 
          catch (Exception p_exeception)
@@ -392,6 +400,58 @@ public class CF_Hardware extends OpMode
 //            WarningMessage("ZipLineServo");
             DbgLog.msg(p_exeception.getLocalizedMessage());
             SpongeBobRight = null;
+         }
+      }
+   }
+
+   //--------------------------------------------------------------------------
+   // NAME: SetBucketServoPosition
+   // DESC: Scale the joystick input using a nonlinear algorithm.
+   //--------------------------------------------------------------------------
+   public void SetBucketServoPosition(double servoPositionDesired)
+   {
+      // Ensure the specific value is legal.
+      double servoPositionActual = Range.clip(servoPositionDesired, 0, 1);
+
+      // Set servo power levels
+      if (BucketServo != null)
+      {
+         try
+         {
+            BucketServo.setPosition(servoPositionActual);
+         }
+
+         catch (Exception p_exeception)
+         {
+//            WarningMessage("ZipLineServo");
+            DbgLog.msg(p_exeception.getLocalizedMessage());
+            BucketServo = null;
+         }
+      }
+   }
+
+   //--------------------------------------------------------------------------
+   // NAME: SetClawServoPosition
+   // DESC: Scale the joystick input using a nonlinear algorithm.
+   //--------------------------------------------------------------------------
+   //public void SetClawServoPosition(double servoPositionDesired)
+   {
+      // Ensure the specific value is legal.
+     // double servoPositionActual = Range.clip(servoPositionDesired, 0, 1);
+
+      // Set servo power levels
+      //if (ClawServo != null)
+      {
+         //try
+         {
+            //ClawServo.setPosition(servoPositionActual);
+         }
+
+         //catch (Exception p_exeception)
+         {
+//            WarningMessage("ZipLineServo");
+            //DbgLog.msg(p_exeception.getLocalizedMessage());
+            // ClawServo = null;
          }
       }
    }
@@ -424,6 +484,35 @@ public class CF_Hardware extends OpMode
          position = SpongeBobRight.getPosition();
       }
       return position;
+   }
+
+   //--------------------------------------------------------------------------
+   // NAME: GetBucketServoPosition
+   // DESC:
+   //--------------------------------------------------------------------------
+   public double GetBucketServoPosition()
+   {
+      double position = 0.0;
+
+      if (BucketServo != null)
+      {
+         position = BucketServo.getPosition();
+      }
+      return position;
+   }
+   //--------------------------------------------------------------------------
+   // NAME: GetClawServoPosition
+   // DESC:
+   //--------------------------------------------------------------------------
+   //public double GetClawServoPosition()
+   {
+      //double position = 0.0;
+
+      //if (ClawServo != null)
+      {
+         //position = ClawServo.getPosition();
+      }
+      //return position;
    }
 
    //------------------------------------------------------------

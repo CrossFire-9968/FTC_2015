@@ -234,27 +234,18 @@ public class CF_AutoBlueMtn extends CF_Hardware
             case 13:
                 if (AimMotor != null)
                 {
-                    AimMotor.setChannelMode
-                            (
-                                    DcMotorController.RunMode.RESET_ENCODERS
-                            );
+                    AimMotor.setMode(DcMotorController.RunMode.RESET_ENCODERS);
                 }
                 if (AimMotor != null)
                 {
-                    AimMotor.setChannelMode
-                            (
-                                    DcMotorController.RunMode.RUN_USING_ENCODERS
-                            );
+                    AimMotor.setMode(DcMotorController.RunMode.RUN_USING_ENCODERS);
                 }
                 AimMotor.setPower(0.25f);
                 if (Math.abs(AimMotor.getCurrentPosition()) > 1091)
                 {
                     AimMotor.setPower(0.00f);
                 }
-                AimMotor.setChannelMode
-                        (
-                                DcMotorController.RunMode.RESET_ENCODERS
-                        );
+                AimMotor.setMode(DcMotorController.RunMode.RESET_ENCODERS);
                 break;
 
             default:

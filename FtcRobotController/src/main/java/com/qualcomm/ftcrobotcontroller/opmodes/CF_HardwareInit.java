@@ -443,10 +443,7 @@ public class CF_HardwareInit extends OpMode
    {
       if (DriveMotor1 != null)
       {
-         DriveMotor1.setChannelMode
-            (
-               DcMotorController.RunMode.RUN_USING_ENCODERS
-            );
+         DriveMotor1.setMode(DcMotorController.RunMode.RUN_USING_ENCODERS);
       }
 
    } // run_using_left_drive_encoder
@@ -464,10 +461,7 @@ public class CF_HardwareInit extends OpMode
    {
       if (DriveMotor2 != null)
       {
-         DriveMotor2.setChannelMode
-            (
-               DcMotorController.RunMode.RUN_USING_ENCODERS
-            );
+         DriveMotor2.setMode(DcMotorController.RunMode.RUN_USING_ENCODERS);
       }
 
    } // run_using_right_drive_encoder
@@ -504,13 +498,9 @@ public class CF_HardwareInit extends OpMode
    {
       if (DriveMotor1 != null)
       {
-         if (DriveMotor1.getChannelMode() ==
-            DcMotorController.RunMode.RESET_ENCODERS)
+         if (DriveMotor1.getMode() == DcMotorController.RunMode.RESET_ENCODERS)
          {
-            DriveMotor1.setChannelMode
-               (
-                  DcMotorController.RunMode.RUN_WITHOUT_ENCODERS
-               );
+            DriveMotor1.setMode(DcMotorController.RunMode.RUN_WITHOUT_ENCODERS);
          }
       }
 
@@ -529,13 +519,9 @@ public class CF_HardwareInit extends OpMode
    {
       if (DriveMotor2 != null)
       {
-         if (DriveMotor2.getChannelMode() ==
-            DcMotorController.RunMode.RESET_ENCODERS)
+         if (DriveMotor2.getMode() == DcMotorController.RunMode.RESET_ENCODERS)
          {
-            DriveMotor2.setChannelMode
-               (
-                  DcMotorController.RunMode.RUN_WITHOUT_ENCODERS
-               );
+            DriveMotor2.setMode(DcMotorController.RunMode.RUN_WITHOUT_ENCODERS);
          }
       }
 
@@ -572,10 +558,7 @@ public class CF_HardwareInit extends OpMode
    {
       if (DriveMotor1 != null)
       {
-         DriveMotor1.setChannelMode
-            (
-               DcMotorController.RunMode.RESET_ENCODERS
-            );
+         DriveMotor1.setMode(DcMotorController.RunMode.RESET_ENCODERS);
       }
 
    } // reset_left_drive_encoder
@@ -593,10 +576,7 @@ public class CF_HardwareInit extends OpMode
    {
       if (DriveMotor2 != null)
       {
-         DriveMotor2.setChannelMode
-            (
-               DcMotorController.RunMode.RESET_ENCODERS
-            );
+         DriveMotor2.setMode(DcMotorController.RunMode.RESET_ENCODERS);
       }
 
    } // reset_right_drive_encoder

@@ -16,6 +16,8 @@ public class CF_AutoMtnPark extends CF_Hardware
 {
    final static double OFF = 0.0f;
 
+   int count = 0;
+
    // States used in autononomous mountain parking
    public enum States
    {
@@ -78,44 +80,44 @@ public class CF_AutoMtnPark extends CF_Hardware
    @Override
    public void loop()
    {
-      // Autonomous mountain park state machine
-      switch (currentState)
-      {
-         case DriveFromWall:
+//      // Autonomous mountain park state machine
+//      switch (currentState)
+//      {
+//         case DriveFromWall:
             doDriveFromWall();
-            break;
-
-         case TurnTowardMtn:
-            doTurnTowardMtn();
-            break;
-
-         case DriveToMtn:
-            doDriveToMtn();
-            break;
-
-         case RaiseWinch:
-            doRaiseWinch();
-            break;
-
-         case ExtendWinch:
-            doExtendWinch();
-            break;
-
-         case LowerWinchToBar:
-            doLowerWinchToBar();
-            break;
-
-         case RetractWinchAndDrive:
-            doRetractWinchAndDrive();
-            break;
-
-         case EndAuto:
-            doEndAuto();
-            break;
-
-         default:
-            break;
-      }
+//            break;
+//
+//         case TurnTowardMtn:
+//            doTurnTowardMtn();
+//            break;
+//
+//         case DriveToMtn:
+//            doDriveToMtn();
+//            break;
+//
+//         case RaiseWinch:
+//            doRaiseWinch();
+//            break;
+//
+//         case ExtendWinch:
+//            doExtendWinch();
+//            break;
+//
+//         case LowerWinchToBar:
+//            doLowerWinchToBar();
+//            break;
+//
+//         case RetractWinchAndDrive:
+//            doRetractWinchAndDrive();
+//            break;
+//
+//         case EndAuto:
+//            doEndAuto();
+//            break;
+//
+//         default:
+//            break;
+//      }
    }
 
 
@@ -188,6 +190,8 @@ public class CF_AutoMtnPark extends CF_Hardware
       boolean drive1PositionReached = false;
       boolean drive2PositionReached = false;
 
+
+
       // Show state on driver app for debug purposes
       telemetry.addData("1", "State: DriveFromWall");
 
@@ -204,6 +208,8 @@ public class CF_AutoMtnPark extends CF_Hardware
       drive1PositionReached = Drive1EncodersReachedPosition(countsToMoveMotor1);
       drive2PositionReached = Drive2EncodersReachedPosition(countsToMoveMotor2);
 
+      count++;
+
       // If either encoder has reached the desired position, turn off motors and reset encoders
       if ((drive1PositionReached) || (drive2PositionReached))
       {
@@ -213,6 +219,9 @@ public class CF_AutoMtnPark extends CF_Hardware
          // Time to turn toward mountain
          currentState = States.TurnTowardMtn;
       }
+
+      telemetry.addData("2", "Drive1Reached: " + GetDriveMotorPower1());
+      telemetry.addData("3", "Drive2Reached: " + count);
    }
 
 

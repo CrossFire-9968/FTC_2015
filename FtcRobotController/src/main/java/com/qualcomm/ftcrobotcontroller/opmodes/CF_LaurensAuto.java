@@ -1,8 +1,9 @@
 package com.qualcomm.ftcrobotcontroller.opmodes;
 
+
 //------------------------------------------------------------------------------
 //
-// CF_AutoMtnPark
+// CF_LaurensAuto
 //
 
 /**
@@ -12,18 +13,18 @@ package com.qualcomm.ftcrobotcontroller.opmodes;
  *
  * @author Lauren Dawson
  */
-public class CF_AutoMtnPark extends Jeffs_Hardware
+
+public class CF_LaurensAuto extends Jeffs_Hardware
 {
    // States used in autonomous mountain parking
    public enum States
    {
-      DriveFromWall,
-      TurnTowardMtn,
-      DriveToMtn,
-      RaiseWinch,
-      ExtendWinch,
-      LowerWinchToBar,
-      RetractWinchAndDrive,
+      DriveAwayFromWall,
+      LineUpForTurn,
+      GoTowardMtn,
+      STurn,
+      LineUpWithMtn,
+      DriveUpMtn,
       EndAuto,
    }
 
@@ -35,7 +36,7 @@ public class CF_AutoMtnPark extends Jeffs_Hardware
    // Method:  PushBotAuto
    // Desc:    Constructor
    //--------------------------------------------------------------------------
-   public CF_AutoMtnPark()
+   public CF_LaurensAuto()
    {
       // Initialize base classes.
       // All via self-construction.
@@ -76,7 +77,7 @@ public class CF_AutoMtnPark extends Jeffs_Hardware
       ResetDriveEncoders();
 
       // Set state machine to the state we want to start in
-      currentState = States.DriveFromWall;
+      currentState = States.DriveAwayFromWall;
       nextStateAfterWait = States.EndAuto;
    }
 
@@ -94,16 +95,16 @@ public class CF_AutoMtnPark extends Jeffs_Hardware
       // Autonomous mountain park state machine
       switch (currentState)
       {
-         case DriveFromWall:
-            doDriveFromWall();
+         case DriveAwayFromWall:
+            doDriveAwayFromWall();
             break;
 
-         case TurnTowardMtn:
-            doTurnTowardMtn();
+         case LineUpForTurn:
+            doLineUpForTurn();
             break;
 
-         case DriveToMtn:
-            doDriveToMtn();
+         case GoTowardMtn:
+            doGoTowardMtn();
             break;
 //
 //         case RaiseWinch:
@@ -139,14 +140,14 @@ public class CF_AutoMtnPark extends Jeffs_Hardware
    // Method:  doDriveAwayFromWall
    // Desc:    Turn on motors to drive straight from wall out onto arena.
    //--------------------------------------------------------------------------
-   private void doDriveFromWall()
+   private void doDriveAwayFromWall()
    {
 //      final int countsToMoveMotor1 = 1000;
 //      final int countsToMoveMotor2 = 1000;
       final double drive1Power = 0.2f;
       final double drive2Power = 0.2f;
-      final int newMotorPosition1 = -4000;
-      final int newMotorPosition2 = -4000;
+      final int newMotorPosition1 = -3000;
+      final int newMotorPosition2 = -3000;
       boolean drive1PositionReached = false;
       boolean drive2PositionReached = false;
 
@@ -180,23 +181,22 @@ public class CF_AutoMtnPark extends Jeffs_Hardware
          // and specify the state we want to enter after encoders reset
          //currentState = States.WaitForEncoderReset;
          //nextStateAfterWait = States.TurnTowardMtn;
-         currentState = States.TurnTowardMtn;
+         currentState = States.LineUpForTurn;
       }
    }
 
-
    //--------------------------------------------------------------------------
-   // Method:  doTurnTowardMtn
+   // Method:  doLineUpForTurn
    // Desc:
    //--------------------------------------------------------------------------
-   private void doTurnTowardMtn()
+   private void doLineUpForTurn()
    {
 //      final int countsToMoveMotor1 = 500;
 //      final int countsToMoveMotor2 = -500;
       final double leftDrivePower = 0.20f;
       final double rightDrivePower = 0.20f;
-      int newMotorPosition1 = -4800;
-      int newMotorPosition2 = -3200;
+      int newMotorPosition1 = -2500;
+      int newMotorPosition2 = -3000;
       boolean drive1PositionReached = false;
       boolean drive2PositionReached = false;
 
@@ -223,13 +223,13 @@ public class CF_AutoMtnPark extends Jeffs_Hardware
       // If either encoder has reached the desired position, turn off motors and reset encoders
       if ((drive1PositionReached) || (drive2PositionReached))
       {
-          //Reset motor encoders
+         //Reset motor encoders
          //ResetDriveEncoders();
 
-          //Tell state machine to wait for encoder reset before moving on the next motor command
-          //and specify the state we want to enter after encoders reset
+         //Tell state machine to wait for encoder reset before moving on the next motor command
+         //and specify the state we want to enter after encoders reset
 
-         currentState = States.DriveToMtn;
+         currentState = States.GoTowardMtn;
 //         nextStateAfterWait = States.EndAuto;
       }
    }
@@ -239,14 +239,14 @@ public class CF_AutoMtnPark extends Jeffs_Hardware
    // Method:  doDriveTowardMtn
    // Desc:
    //--------------------------------------------------------------------------
-   private void doDriveToMtn()
+   private void doGoTowardMtn()
    {
-//      final int countsToMoveMotor1 = -820;
-//      final int countsToMoveMotor2 = 820;
+//      final int countsToMoveMotor1 = -2500;
+//      final int countsToMoveMotor2 = -3000;
       final double leftDrivePower = 0.20f;
       final double rightDrivePower = 0.20f;
-      int newMotorPosition1 = 2200;
-      int newMotorPosition2 = 3800;
+      int newMotorPosition1 = ;
+      int newMotorPosition2 = ;
       boolean drive1PositionReached = false;
       boolean drive2PositionReached = false;
 
@@ -364,3 +364,5 @@ public class CF_AutoMtnPark extends Jeffs_Hardware
    }
 }
 
+
+}

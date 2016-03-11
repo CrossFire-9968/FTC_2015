@@ -146,8 +146,8 @@ public class CF_LaurensAuto extends Jeffs_Hardware
 //      final int countsToMoveMotor2 = 1000;
       final double drive1Power = 0.2f;
       final double drive2Power = 0.2f;
-      final int newMotorPosition1 = -3000;
-      final int newMotorPosition2 = -3000;
+      final int newMotorPosition1 = -8000;
+      final int newMotorPosition2 = -8000;
       boolean drive1PositionReached = false;
       boolean drive2PositionReached = false;
 
@@ -195,8 +195,8 @@ public class CF_LaurensAuto extends Jeffs_Hardware
 //      final int countsToMoveMotor2 = -500;
       final double leftDrivePower = 0.20f;
       final double rightDrivePower = 0.20f;
-      int newMotorPosition1 = -2500;
-      int newMotorPosition2 = -3000;
+      int newMotorPosition1 = -8700;
+      int newMotorPosition2 = -800;
       boolean drive1PositionReached = false;
       boolean drive2PositionReached = false;
 
@@ -245,8 +245,8 @@ public class CF_LaurensAuto extends Jeffs_Hardware
 //      final int countsToMoveMotor2 = -3000;
       final double leftDrivePower = 0.20f;
       final double rightDrivePower = 0.20f;
-      int newMotorPosition1 = ;
-      int newMotorPosition2 = ;
+      int newMotorPosition1 = -3500;
+      int newMotorPosition2 = -4000;
       boolean drive1PositionReached = false;
       boolean drive2PositionReached = false;
 
@@ -281,11 +281,11 @@ public class CF_LaurensAuto extends Jeffs_Hardware
    // Method:  doRaiseWinch
    // Desc:
    //--------------------------------------------------------------------------
-   private void doRaiseWinch()
+   //private void doRaiseWinch()
    {
       // Show state on driver app for debug purposes
-      telemetry.addData("1", "State: RaiseWinch");
-      currentState = States.ExtendWinch;
+//      telemetry.addData("1", "State: RaiseWinch");
+//      currentState = States.ExtendWinch;
    }
 
 
@@ -293,11 +293,11 @@ public class CF_LaurensAuto extends Jeffs_Hardware
    // Method:  doExtendWinch
    // Desc:
    //--------------------------------------------------------------------------
-   private void doExtendWinch()
+   //private void doExtendWinch()
    {
       // Show state on driver app for debug purposes
-      telemetry.addData("1", "State: ExtendWinch");
-      currentState = States.LowerWinchToBar;
+//      telemetry.addData("1", "State: ExtendWinch");
+//      currentState = States.LowerWinchToBar;
    }
 
 
@@ -305,11 +305,11 @@ public class CF_LaurensAuto extends Jeffs_Hardware
    // Method:  doLowerWinchToBar
    // Desc:
    //--------------------------------------------------------------------------
-   private void doLowerWinchToBar()
+   //private void doLowerWinchToBar()
    {
       // Show state on driver app for debug purposes
-      telemetry.addData("1", "State: LowerWinchToBar");
-      currentState = States.RetractWinchAndDrive;
+//      telemetry.addData("1", "State: LowerWinchToBar");
+//      currentState = States.RetractWinchAndDrive;
    }
 
 
@@ -317,11 +317,11 @@ public class CF_LaurensAuto extends Jeffs_Hardware
    // Method:  doRetractWinchAndDrive
    // Desc:
    //--------------------------------------------------------------------------
-   private void doRetractWinchAndDrive()
+//   private void doRetractWinchAndDrive()
    {
       // Show state on driver app for debug purposes
-      telemetry.addData("1", "State: RetractWinchAndDrive");
-      currentState = States.EndAuto;
+//      telemetry.addData("1", "State: RetractWinchAndDrive");
+//      currentState = States.EndAuto;
    }
 
 
@@ -362,7 +362,4 @@ public class CF_LaurensAuto extends Jeffs_Hardware
          currentState = nextStateAfterWait;
       }
    }
-}
-
-
 }

@@ -18,6 +18,7 @@ public class CF_AutoMtnPark extends Jeffs_Hardware
    public enum States
    {
       DriveFromWall,
+      BackUp,
       TurnTowardMtn,
       DriveToMtn,
       RaiseWinch,
@@ -98,6 +99,10 @@ public class CF_AutoMtnPark extends Jeffs_Hardware
             doDriveFromWall();
             break;
 
+         case BackUp:
+            doBackUp();
+            break;
+
          case TurnTowardMtn:
             doTurnTowardMtn();
             break;
@@ -145,8 +150,8 @@ public class CF_AutoMtnPark extends Jeffs_Hardware
 //      final int countsToMoveMotor2 = 1000;
       final double drive1Power = 0.2f;
       final double drive2Power = 0.2f;
-      final int newMotorPosition1 = -4000;
-      final int newMotorPosition2 = -4000;
+      final int newMotorPosition1 = -8800;
+      final int newMotorPosition2 = -8800;
       boolean drive1PositionReached = false;
       boolean drive2PositionReached = false;
 
@@ -180,10 +185,59 @@ public class CF_AutoMtnPark extends Jeffs_Hardware
          // and specify the state we want to enter after encoders reset
          //currentState = States.WaitForEncoderReset;
          //nextStateAfterWait = States.TurnTowardMtn;
-         currentState = States.TurnTowardMtn;
+         currentState = States.BackUp;
       }
    }
 
+
+   //--------------------------------------------------------------------------
+   // Method:  doBackUp
+   // Desc:    Turn on motors to drive straight from wall out onto arena.
+   //--------------------------------------------------------------------------
+   private void doBackUp()
+   {
+//      final int countsToMoveMotor1 = 1000;
+//      final int countsToMoveMotor2 = 1000;
+      final double drive1Power = 0.2f;
+      final double drive2Power = 0.2f;
+      final int newMotorPosition1 = -8300;
+      final int newMotorPosition2 = -8300;
+      boolean drive1PositionReached = false;
+      boolean drive2PositionReached = false;
+
+      // Get current encoder motor counts
+//      newMotorPosition1 = GetDrive1MotorCounts() + countsToMoveMotor1;
+//      newMotorPosition2 = GetDrive2MotorCounts() + countsToMoveMotor2;
+
+      // Show state on driver app for debug purposes
+      telemetry.addData("1", "State: BackUp");
+
+      // Set the drive motor encoders to use RUN_TO_POSITION
+      SetRunToPositionMode();
+
+      // set desired encoder counts to move
+      SetDesiredDriveEncoderPositions(newMotorPosition1, newMotorPosition2);
+
+      // Set motor power to drive straight forward until position reached
+      SetDriveMotorPower(drive1Power, drive2Power);
+
+      // Check to see if encoders have reached desired position
+      drive1PositionReached = Drive1EncodersReachedPosition(newMotorPosition1);
+      drive2PositionReached = Drive2EncodersReachedPosition(newMotorPosition2);
+
+      // If either encoder has reached the desired position, turn off motors and reset encoders
+      if ((drive1PositionReached) || (drive2PositionReached))
+      {
+         // Reset motor encoders
+         //ResetDriveEncoders();
+
+         // Tell state machine to wait for encoder reset before moving on the next motor command
+         // and specify the state we want to enter after encoders reset
+         //currentState = States.WaitForEncoderReset;
+         //nextStateAfterWait = States.TurnTowardMtn;
+         currentState = States.TurnTowardMtn;
+      }
+   }
 
    //--------------------------------------------------------------------------
    // Method:  doTurnTowardMtn
@@ -195,8 +249,8 @@ public class CF_AutoMtnPark extends Jeffs_Hardware
 //      final int countsToMoveMotor2 = -500;
       final double leftDrivePower = 0.20f;
       final double rightDrivePower = 0.20f;
-      int newMotorPosition1 = -4800;
-      int newMotorPosition2 = -3200;
+      int newMotorPosition1 = -9600;
+      int newMotorPosition2 = -7000;
       boolean drive1PositionReached = false;
       boolean drive2PositionReached = false;
 
@@ -241,12 +295,12 @@ public class CF_AutoMtnPark extends Jeffs_Hardware
    //--------------------------------------------------------------------------
    private void doDriveToMtn()
    {
-//      final int countsToMoveMotor1 = -820;
-//      final int countsToMoveMotor2 = 820;
-      final double leftDrivePower = 0.20f;
-      final double rightDrivePower = 0.20f;
-      int newMotorPosition1 = 2200;
-      int newMotorPosition2 = 3800;
+//      final int countsToMoveMotor1 = -9700;
+//      final int countsToMoveMotor2 = -6900;
+      final double leftDrivePower = 0.15f;
+      final double rightDrivePower = 0.15f;
+      int newMotorPosition1 = -600;
+      int newMotorPosition2 = 2000;
       boolean drive1PositionReached = false;
       boolean drive2PositionReached = false;
 
@@ -266,6 +320,7 @@ public class CF_AutoMtnPark extends Jeffs_Hardware
       // If either encoder has reached the desired position, turn off motors and reset encoders
       if ((drive1PositionReached) || (drive2PositionReached))
       {
+         doEndAuto();
          // Reset motor encoders
 //         ResetDriveEncoders();
 

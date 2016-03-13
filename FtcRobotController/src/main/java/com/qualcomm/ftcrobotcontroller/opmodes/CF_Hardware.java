@@ -21,6 +21,7 @@ public class CF_Hardware extends OpMode
    private DcMotor ExtensionMotor;
    public DcMotor AimMotor;
    private Servo BucketServo;
+   private DcMotor TuskMotor;
 
    public enum DriveConfig_E
    {
@@ -60,12 +61,14 @@ public class CF_Hardware extends OpMode
       AimMotor = hardwareMap.dcMotor.get("AimMotor");
       BucketServo = hardwareMap.servo.get("BucketServo");
       //TouchSensor1 = hardwareMap.touchSensor.get ("TouchSensor1");
+      TuskMotor = hardwareMap.dcMotor.get("TuskMotor");
 
       // Reverse right side motors so left and right motors spin same direction on robot
       DriveMotor1.setDirection(DcMotor.Direction.FORWARD);
       DriveMotor2.setDirection(DcMotor.Direction.REVERSE);
       AimMotor.setDirection(DcMotor.Direction.REVERSE);
       ExtensionMotor.setDirection(DcMotor.Direction.FORWARD);
+      TuskMotor.setDirection(DcMotor.Direction.FORWARD);
 
       SetSpongeBobRightPosition(0.65);
       SetSpongeBobLeftPosition(0.13);
@@ -312,6 +315,20 @@ public class CF_Hardware extends OpMode
       AimMotor.setPower(powerLevel2);
    }
 }
+
+
+   //--------------------------------------------------------------------------
+   // NAME: SetTuskMotorPower
+   // DESC:
+   //--------------------------------------------------------------------------
+   public void SetTuskMotorPower(double power)
+   {
+      // Set tusk motor power level
+      if (TuskMotor != null)
+      {
+         TuskMotor.setPower(power);
+      }
+   }
 
 
    //--------------------------------------------------------------------------

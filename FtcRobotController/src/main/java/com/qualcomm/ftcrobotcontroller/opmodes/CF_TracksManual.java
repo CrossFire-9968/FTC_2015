@@ -49,18 +49,21 @@ public class CF_TracksManual extends CF_Hardware
    //--------------------------------------------------------------------------
    private void motorControl()
    {
-      float powerLevelDrive1;
-      float powerLevelDrive2;
-      float powerLevelWinchE;
-      float powerLevelWinchA;
-      float Gp1_LeftStickY = gamepad1.left_stick_y;
-      float Gp1_RightStickY = gamepad1.right_stick_y;
+      double powerLevelDrive1;
+      double powerLevelDrive2;
+      double powerLevelWinchE;
+      double powerLevelWinchA;
+      double powerLevelTusks;
+      double Gp1_LeftStickY = gamepad1.left_stick_y;
+      double Gp1_RightStickY = gamepad1.right_stick_y;
       boolean Gp1_DPadUp = gamepad1.dpad_up;
       boolean Gp1_DPadDown = gamepad1.dpad_down;
-      float Gp2_RightStickY = gamepad2.right_stick_y;
+      double Gp2_RightStickY = gamepad2.right_stick_y;
       boolean Gp1_DPadLeft = gamepad1.dpad_left;
       boolean Gp1_DPadRight = gamepad1.dpad_right;
-      float Gp2_LeftStickY = gamepad2.left_stick_y;
+      double Gp2_LeftStickY = gamepad2.left_stick_y;
+
+      final double tuskPower = 0.4;
 
 
       // Change power multiplier based on D-Pad selection
@@ -92,20 +95,37 @@ public class CF_TracksManual extends CF_Hardware
          SetDriveConfig(DriveConfig_E.MOUNTAIN);
       }
 
+      // Set power level for all clear tusks
+      if (gamepad2.y)
+      {
+         // Drive tusks to pull down all clear signal
+         powerLevelTusks = tuskPower;
+      }
+      else if (gamepad2.a)
+      {
+         // Drive tusks to release all clear signal
+         powerLevelTusks = -tuskPower;
+      }
+      else
+      {
+         // Turn off power to tusk motor
+         powerLevelTusks = 0.0;
+      }
+
       // Convert game pad values to meaningful motor power values.  X and Y
       // are range limited to +/-1.  Negative values are when joystick pushed
       // forward. DC motors are scaled to make it easier to control at slower speeds
-      powerLevelDrive1 = (float)ScaleDriveMotorPower(Gp1_LeftStickY) * PowerGain;
-      powerLevelDrive2 = (float)ScaleDriveMotorPower(Gp1_RightStickY) * PowerGain;
-      powerLevelWinchE = (float)ScaleWinchMotorPower(Gp2_RightStickY);
+      powerLevelDrive1 = ScaleDriveMotorPower(Gp1_LeftStickY) * PowerGain;
+      powerLevelDrive2 = ScaleDriveMotorPower(Gp1_RightStickY) * PowerGain;
+      powerLevelWinchE = ScaleWinchMotorPower(Gp2_RightStickY);
 
       if (Gp2_LeftStickY > 0)
       {
-         powerLevelWinchA = (float)ScaleWinchMotorPower(Gp2_LeftStickY) * 0.20f;
+         powerLevelWinchA = ScaleWinchMotorPower(Gp2_LeftStickY) * 0.20f;
       }
       else if (Gp2_LeftStickY < 0)
       {
-         powerLevelWinchA = (float)ScaleWinchMotorPower(Gp2_LeftStickY) * 0.10f;
+         powerLevelWinchA = ScaleWinchMotorPower(Gp2_LeftStickY) * 0.10f;
       }
       else
       {
@@ -115,6 +135,7 @@ public class CF_TracksManual extends CF_Hardware
       // Turn motors on
       SetDriveMotorPower(powerLevelDrive1, powerLevelDrive2);
       SetWinchPower(powerLevelWinchE, powerLevelWinchA);
+      SetTuskMotorPower(powerLevelTusks);
    }
 
    //--------------------------------------------------------------------------

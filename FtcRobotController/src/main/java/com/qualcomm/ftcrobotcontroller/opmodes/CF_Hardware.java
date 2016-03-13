@@ -18,7 +18,6 @@ public class CF_Hardware extends OpMode
    private DcMotor DriveMotor2;
    private Servo SpongeBobLeft;
    private Servo SpongeBobRight;
-   // public Servo ClawServo;
    private DcMotor ExtensionMotor;
    public DcMotor AimMotor;
    private Servo BucketServo;
@@ -62,21 +61,14 @@ public class CF_Hardware extends OpMode
       BucketServo = hardwareMap.servo.get("BucketServo");
       //TouchSensor1 = hardwareMap.touchSensor.get ("TouchSensor1");
 
-      // ConveyorMotor = hardwareMap.dcMotor.get("ConveyorMotor");
-      //HookMotor = hardwareMap.dcMotor.get("HookMotor");
-      //ClawServo = hardwareMap.servo.get("ClawServo");
-
       // Reverse right side motors so left and right motors spin same direction on robot
       DriveMotor1.setDirection(DcMotor.Direction.FORWARD);
       DriveMotor2.setDirection(DcMotor.Direction.REVERSE);
       AimMotor.setDirection(DcMotor.Direction.REVERSE);
       ExtensionMotor.setDirection(DcMotor.Direction.FORWARD);
-      //ConveyorMotor.setDirection(DcMotor.Direction.FORWARD);
-      //HookMotor.setDirection(DcMotor.Direction.FORWARD);
 
       SetSpongeBobRightPosition(0.65);
       SetSpongeBobLeftPosition(0.13);
-      //SetClawServoPosition(1.00);
       SetBucketServoPosition(0.82);
    }
 
@@ -445,20 +437,6 @@ public class CF_Hardware extends OpMode
          position = BucketServo.getPosition();
       }
       return position;
-   }
-   //--------------------------------------------------------------------------
-   // NAME: GetClawServoPosition
-   // DESC:
-   //--------------------------------------------------------------------------
-   //public double GetClawServoPosition()
-   {
-      //double position = 0.0;
-
-      //if (ClawServo != null)
-      {
-         //position = ClawServo.getPosition();
-      }
-      //return position;
    }
 
    //------------------------------------------------------------

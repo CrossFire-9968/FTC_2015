@@ -248,9 +248,9 @@ public class CF_AutoMtnPark extends Jeffs_Hardware
 //      final int countsToMoveMotor1 = 500;
 //      final int countsToMoveMotor2 = -500;
       final double leftDrivePower = 0.20f;
-      final double rightDrivePower = 0.20f;
-      int newMotorPosition1 = -9600;
-      int newMotorPosition2 = -7000;
+      final double rightDrivePower = 0.15f;
+      int newMotorPosition1 = -3850;
+      int newMotorPosition2 = -12750;
       boolean drive1PositionReached = false;
       boolean drive2PositionReached = false;
 
@@ -295,12 +295,12 @@ public class CF_AutoMtnPark extends Jeffs_Hardware
    //--------------------------------------------------------------------------
    private void doDriveToMtn()
    {
-//      final int countsToMoveMotor1 = -9700;
-//      final int countsToMoveMotor2 = -6900;
+//      final int countsToMoveMotor1 = -3500;;
+//      final int countsToMoveMotor2 = -13100;
       final double leftDrivePower = 0.15f;
       final double rightDrivePower = 0.15f;
-      int newMotorPosition1 = -600;
-      int newMotorPosition2 = 2000;
+      int newMotorPosition1 = 2150;
+      int newMotorPosition2 = -6750;
       boolean drive1PositionReached = false;
       boolean drive2PositionReached = false;
 

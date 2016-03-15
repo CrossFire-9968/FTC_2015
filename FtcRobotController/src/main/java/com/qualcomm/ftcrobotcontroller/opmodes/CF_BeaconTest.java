@@ -14,9 +14,7 @@ public class CF_BeaconTest extends CF_Hardware {
     public int blue;
     int state = 1;
     int subState = 0;
-    int red = 0;
-    int green = 0;
-    int blue = 0;
+
 
     public CF_BeaconTest() {}
         @Override public void start () {
@@ -99,7 +97,7 @@ public class CF_BeaconTest extends CF_Hardware {
                             break;
                         case BLUE:
                             switch (subState) {
-                                state 0:
+                                case 0:
                                 reset_drive_encoders();
                                 run_using_encoders();
                                 set_drive_power(-0.25f, -0.25f);
@@ -110,7 +108,7 @@ public class CF_BeaconTest extends CF_Hardware {
                                 }
                                 break;
 
-                                state 1:
+                                case 1:
                                 run_using_encoders();
                                 set_drive_power(0.25f, 0.10f);
                                 if (have_drive_encoders_reached(300, 150)) {
@@ -120,7 +118,7 @@ public class CF_BeaconTest extends CF_Hardware {
                                 }
                                 break;
 
-                                state 2:
+                                case 2:
                                 run_using_encoders();
                                 set_drive_power(0.0f, 0.25f);
                                 if (have_drive_encoders_reached(0, 300)) {
@@ -130,7 +128,7 @@ public class CF_BeaconTest extends CF_Hardware {
                                 }
                                 break;
 
-                                state 3:
+                                case 3:
                                 for (int i = 0; i < 10; i++) {
                                     red = sensorColor.red() + red;
                                     green = sensorColor.green() + green;

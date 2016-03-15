@@ -1,7 +1,5 @@
 package com.qualcomm.ftcrobotcontroller.opmodes;
 
-import com.qualcomm.robotcore.hardware.DcMotor;
-
 /**
  * Created by Lauren_FTC on 10/18/2015.
  */
@@ -53,7 +51,7 @@ public class CF_TracksManual extends CF_Hardware
       double powerLevelDrive2;
       double powerLevelWinchE;
       double powerLevelWinchA;
-      double powerLevelTusks;
+      double powerLevelReaper;
       double Gp1_LeftStickY = gamepad1.left_stick_y;
       double Gp1_RightStickY = gamepad1.right_stick_y;
       boolean Gp1_DPadUp = gamepad1.dpad_up;
@@ -63,7 +61,7 @@ public class CF_TracksManual extends CF_Hardware
       boolean Gp1_DPadRight = gamepad1.dpad_right;
       double Gp2_LeftStickY = gamepad2.left_stick_y;
 
-      final double tuskPower = 0.4;
+      final double reaperPower = 0.2;
 
 
       // Change power multiplier based on D-Pad selection
@@ -95,21 +93,21 @@ public class CF_TracksManual extends CF_Hardware
          SetDriveConfig(DriveConfig_E.MOUNTAIN);
       }
 
-      // Set power level for all clear tusks
+      // Set power level for all clear reaper
       if (gamepad2.y)
       {
-         // Drive tusks to pull down all clear signal
-         powerLevelTusks = tuskPower;
+         // Drive reaper to pull down all clear signal
+         powerLevelReaper = reaperPower;
       }
       else if (gamepad2.a)
       {
-         // Drive tusks to release all clear signal
-         powerLevelTusks = -tuskPower;
+         // Drive reaper to release all clear signal
+         powerLevelReaper = -reaperPower;
       }
       else
       {
-         // Turn off power to tusk motor
-         powerLevelTusks = 0.0;
+         // Turn off power to reaper motor
+         powerLevelReaper = 0.0;
       }
 
       // Convert game pad values to meaningful motor power values.  X and Y
@@ -135,7 +133,7 @@ public class CF_TracksManual extends CF_Hardware
       // Turn motors on
       SetDriveMotorPower(powerLevelDrive1, powerLevelDrive2);
       SetWinchPower(powerLevelWinchE, powerLevelWinchA);
-      SetTuskMotorPower(powerLevelTusks);
+      SetReaperMotorPower(powerLevelReaper);
    }
 
    //--------------------------------------------------------------------------

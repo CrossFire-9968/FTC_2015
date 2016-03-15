@@ -30,6 +30,12 @@ public class CF_Hardware extends OpMode
 
    public DriveConfig_E DriveConfig = DriveConfig_E.DOZER;
 
+   public enum BeaconState_E{
+      RED,
+      BLUE
+   }
+   public BeaconState_E BeaconState;
+
    //--------------------------------------------------------------------------
    // NAME: CF_Hardware
    // DESC: Constructor called when the class is instantiated.

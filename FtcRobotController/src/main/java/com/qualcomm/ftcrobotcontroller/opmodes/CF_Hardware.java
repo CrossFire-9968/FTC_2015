@@ -14,8 +14,8 @@ import com.qualcomm.robotcore.util.Range;
  */
 public class CF_Hardware extends OpMode
 {
-   private DcMotor DriveMotor1;
-   private DcMotor DriveMotor2;
+   public DcMotor DriveMotor1;
+   public DcMotor DriveMotor2;
    private Servo SpongeBobLeft;
    private Servo SpongeBobRight;
    // public Servo ClawServo;
@@ -35,7 +35,15 @@ public class CF_Hardware extends OpMode
       DOZER
    }
 
+   public enum BeaconState_E
+   {
+      RED,
+      BLUE,
+      OTHER
+   }
+
    public DriveConfig_E DriveConfig = DriveConfig_E.DOZER;
+   public BeaconState_E BeaconState;
 
    //--------------------------------------------------------------------------
    // NAME: CF_Hardware
@@ -556,11 +564,11 @@ public class CF_Hardware extends OpMode
    {
       if (DriveMotor1 != null)
       {
-         DriveMotor1.setPower(p_left_power);
+         DriveMotor1.setPower(-1 * p_left_power);
       }
       if (DriveMotor2 != null)
       {
-         DriveMotor2.setPower(p_right_power);
+         DriveMotor2.setPower(-1 * p_right_power);
       }
 
    } // set_drive_power
@@ -702,17 +710,15 @@ public class CF_Hardware extends OpMode
    /**
     * Reset the left drive wheel encoder.
     */
-   public void reset_left_drive_encoder()
+   public void reset_left_drive_encoder ()
 
    {
-      if (DriveMotor1 != null)
-      {
-         DriveMotor1.setChannelMode
-            (
-               DcMotorController.RunMode.RESET_ENCODERS
-            );
-      }
-
+       if (DriveMotor1 != null)
+       {
+           DriveMotor1.setMode
+                   (DcMotorController.RunMode.RESET_ENCODERS
+                   );
+       }
    } // reset_left_drive_encoder
 
    //--------------------------------------------------------------------------
@@ -723,16 +729,15 @@ public class CF_Hardware extends OpMode
    /**
     * Reset the right drive wheel encoder.
     */
-   public void reset_right_drive_encoder()
+   public void reset_right_drive_encoder ()
 
    {
-      if (DriveMotor2 != null)
-      {
-         DriveMotor2.setChannelMode
-            (
-               DcMotorController.RunMode.RESET_ENCODERS
-            );
-      }
+       if (DriveMotor2 != null)
+       {
+           DriveMotor2.setMode
+                   (DcMotorController.RunMode.RESET_ENCODERS
+                   );
+       }
 
    } // reset_right_drive_encoder
 

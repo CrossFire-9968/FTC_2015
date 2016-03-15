@@ -12,8 +12,11 @@ public class CF_BeaconTest extends CF_Hardware {
     public int red;
     public int green;
     public int blue;
-    int state = 0;
+    int state = 1;
     int subState = 0;
+    int red = 0;
+    int green = 0;
+    int blue = 0;
 
     public CF_BeaconTest() {}
         @Override public void start () {
@@ -42,7 +45,7 @@ public class CF_BeaconTest extends CF_Hardware {
 
 
             switch (state) {
-                case 0:
+                case 1:
                     run_using_encoders();
                     set_drive_power(0.50f, 0.50f);
                     if(have_drive_encoders_reached(19657, 19657)) {
@@ -51,7 +54,7 @@ public class CF_BeaconTest extends CF_Hardware {
                         state++;
                     }
                     break;
-                case 1:
+                /*case 1:
                     run_using_encoders();
                     set_drive_power(0.5f, 0.0f);
                     if(have_drive_encoders_reached(500, 0)){
@@ -59,11 +62,8 @@ public class CF_BeaconTest extends CF_Hardware {
                         set_drive_power(0.0f, 0.0f);
                         state++;
                     }
-                    break;
+                    break;*/
                 case 2:
-                    red = 0;
-                    green = 0;
-                    blue = 0;
                     for(int i = 0; i < 10; i++) {
                         red = red + sensorColor.red();
                         green = green + sensorColor.green();
@@ -98,37 +98,39 @@ public class CF_BeaconTest extends CF_Hardware {
                             }
                             break;
                         case BLUE:
-                            switch(subState) {
-                                case 0:
+                            switch (subState) {
+                                state 0:
                                 reset_drive_encoders();
                                 run_using_encoders();
                                 set_drive_power(-0.25f, -0.25f);
                                 if (have_drive_encoders_reached(500, 500)) {
                                     reset_drive_encoders();
                                     set_drive_power(0.0f, 0.0f);
-                                }
                                     subState++;
-                                    break;
-                                case 1:
+                                }
+                                break;
+
+                                state 1:
                                 run_using_encoders();
                                 set_drive_power(0.25f, 0.10f);
                                 if (have_drive_encoders_reached(300, 150)) {
                                     reset_drive_encoders();
                                     set_drive_power(0.0f, 0.0f);
-                                }
                                     subState++;
-                                    break;
-                                case 2:
+                                }
+                                break;
+
+                                state 2:
                                 run_using_encoders();
                                 set_drive_power(0.0f, 0.25f);
                                 if (have_drive_encoders_reached(0, 300)) {
                                     reset_drive_encoders();
                                     set_drive_power(0.0f, 0.0f);
-
-                                }
                                     subState++;
-                                    break;
-                                case 3:
+                                }
+                                break;
+
+                                state 3:
                                 for (int i = 0; i < 10; i++) {
                                     red = sensorColor.red() + red;
                                     green = sensorColor.green() + green;
@@ -148,12 +150,14 @@ public class CF_BeaconTest extends CF_Hardware {
                                     if (have_drive_encoders_reached(100, 100)) {
                                         reset_drive_encoders();
                                         set_drive_power(0.0f, 0.0f);
+                                        subState++;
+                                        state++;
                                     }
                                 }
+                                break;
                             }
 
 
-                            state++;
                             break;
                         default:
                             telemetry.addData("OTHER", "OTHER");

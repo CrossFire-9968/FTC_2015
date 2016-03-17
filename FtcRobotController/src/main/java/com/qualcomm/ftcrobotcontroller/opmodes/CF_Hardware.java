@@ -32,9 +32,10 @@ public class CF_Hardware extends OpMode
 
    public enum BeaconState_E{
       RED,
-      BLUE
+      BLUE,
+      NULL
    }
-   public BeaconState_E BeaconState;
+   public BeaconState_E BeaconState = BeaconState_E.NULL;
 
    //--------------------------------------------------------------------------
    // NAME: CF_Hardware

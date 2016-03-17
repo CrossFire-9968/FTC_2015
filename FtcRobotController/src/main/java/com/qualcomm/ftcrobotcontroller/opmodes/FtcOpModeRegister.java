@@ -59,5 +59,7 @@ public class FtcOpModeRegister implements OpModeRegister
       manager.register("NullOp", NullOp.class);
       manager.register("CF_AutoMtnPark", CF_AutoMtnPark.class);
       manager.register("CF_TracksManual", CF_TracksManual.class);
+       manager.register("CF_BeaconTest", CF_BeaconTest.class);
+       manager.register("AutoFinal", CF_AutonomousFinal.class);
    }
 }

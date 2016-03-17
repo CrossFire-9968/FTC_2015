@@ -43,18 +43,21 @@ public class CF_BeaconTest extends CF_Hardware {
 
             switch (state) {
                 case 0:
+                    reset_drive_encoders();
                     run_using_encoders();
-                    set_drive_power(0.50f, 0.50f);
-                    if(have_drive_encoders_reached(19657, 19657)) {
+                    set_drive_power(-0.50f, -0.50f);
+                    if(have_drive_encoders_reached(13500, 13500)) {
                         reset_drive_encoders();
                         set_drive_power(0.0f, 0.0f);
+                        telemetry.addData("Encoders", "ENCODERS");
                         state++;
                     }
                     break;
                 case 1:
+                    reset_drive_encoders();
                     run_using_encoders();
-                    set_drive_power(0.5f, 0.0f);
-                    if(have_drive_encoders_reached(500, 0)){
+                    set_drive_power(0.0f, -0.25f);
+                    if(have_drive_encoders_reached(0, 2000)){
                         reset_drive_encoders();
                         set_drive_power(0.0f, 0.0f);
                         state++;
@@ -168,5 +171,6 @@ public class CF_BeaconTest extends CF_Hardware {
             telemetry.addData("Blue", blue);
             telemetry.addData("Left Encoder", a_left_encoder_count());
             telemetry.addData("Right Encoder", a_right_encoder_count());
+            telemetry.addData("State", state);
         }
     }

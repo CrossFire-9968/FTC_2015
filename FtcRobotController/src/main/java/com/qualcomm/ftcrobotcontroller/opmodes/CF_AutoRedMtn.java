@@ -137,49 +137,49 @@ public class CF_AutoRedMtn extends CF_Hardware
                    v_state++;
                 }
                 break;
-             //
-             // Wait...
-             //
-             case 2:
-                if (have_drive_encoders_reset())
-                {
-                   v_state++;
-                }
-                break;
-             case 3:
-                run_using_encoders();
-                set_drive_power(0.25f, -0.25f);
-
-                if (have_drive_encoders_reached(1850, -1850))
-                {
-                   reset_drive_encoders();
-                   set_drive_power(0.0f, 0.0f);
-                   v_state++;
-
-                }
-
-                break;
-
-             case 4:
-                if (have_drive_encoders_reset())
-                {
-                   v_state++;
-                }
-                break;
-             case 5:
-                run_using_encoders();
-                set_drive_power(0.50f, 0.50f);
-
-                if (have_drive_encoders_reached(11612, 11612))
-                {
-                   reset_drive_encoders();
-
-                   set_drive_power(0.0f, 0.0f);
-                   v_state++;
-                }
-
-                break;
+//             //
+//             // Wait...
+//             //
+//             case 2:
+//                if (have_drive_encoders_reset())
+//                {
+//                   v_state++;
+//                }
+//                break;
+//             case 3:
+//                run_using_encoders();
+//                set_drive_power(0.25f, -0.25f);
 //
+//                if (have_drive_encoders_reached(1850, -1850))
+//                {
+//                   reset_drive_encoders();
+//                   set_drive_power(0.0f, 0.0f);
+//                   v_state++;
+//
+//                }
+//
+//                break;
+//
+//             case 4:
+//                if (have_drive_encoders_reset())
+//                {
+//                   v_state++;
+//                }
+//                break;
+//             case 5:
+//                run_using_encoders();
+//                set_drive_power(0.50f, 0.50f);
+//
+//                if (have_drive_encoders_reached(11612, 11612))
+//                {
+//                   reset_drive_encoders();
+//
+//                   set_drive_power(0.0f, 0.0f);
+//                   v_state++;
+//                }
+//
+//                break;
+////
             /*case 6:
 
              if(TouchSensor1.isPressed())

@@ -61,5 +61,6 @@ public class FtcOpModeRegister implements OpModeRegister
       manager.register("CF_TracksManual", CF_TracksManual.class);
       manager.register("CF_AutoBlueMtn", CF_AutoBlueMtn.class);
       manager.register("CF_AutoRedMtn", CF_AutoRedMtn.class);
+      manager.register("CF_BeaconTest", CF_BeaconTest.class);
    }
 }
